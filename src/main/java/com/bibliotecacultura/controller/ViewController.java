@@ -10,4 +10,8 @@ public class ViewController {
     public String paginaLogin() {
         return "login";
     }
+    @GetMapping("/cadastro-funcionario")
+    public String paginaCadastroFuncionario() {
+        return "cadastro-funcionario"; 
+    }
 }

@@ -1,0 +1,184 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Rounded', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #2d435b;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .perfil-funcionario {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background-color: #ddd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2b4260;
+        }
+
+        .faixa-adm {
+            background-color: #1e3046;
+            color: #929bcb;
+            padding: 8px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Courier Prime', monospace;
+            letter-spacing: 1px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 10px auto;
+            padding: 40px;
+            border-radius: 8px;
+        }
+
+        .form-header h1 {
+            font-size: 32px;
+            color: #222;
+            margin-bottom: 6px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .form-header p {
+            font-size: 17px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        fieldset {
+            border: none;
+            margin-bottom: 55px;
+        }
+
+        legend {
+            font-size: 25px;
+            font-weight: 600;
+            color: #2b4260;
+            margin-bottom: 17px;
+            width: 100%;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 5px;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .address-group {
+            display: grid;
+            grid-template-columns: 2fr 1fr 3fr;
+            gap: 15px;
+        }
+
+        .number-group {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-group label {
+            font-size: 17px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .input-group input, .input-group select {
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-submit {
+            background-color: #1a7a96;
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            font-size: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 5px rgb(142, 142, 142);
+        }
+
+        .btn-submit:hover {
+            background-color: #145e74;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 15px;
+                padding: 20px;
+            }
+
+            .form-grid, .address-group, .number-group {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn-submit {
+                width: 100%;
+            }
+        }
