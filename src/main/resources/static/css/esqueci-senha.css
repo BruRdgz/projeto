@@ -36,12 +36,11 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-left: 45px;
+            padding-left: 35px;
             position: relative;
             box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
         }
 
-        /* Borda borrada entre logo-panel e form-panel */
         .logo-panel::after {
             content: '';
             position: absolute;
@@ -66,30 +65,26 @@
             background-color: transparent;
         }
 
-        .subtitle {
-            font-family: 'Courier Prime', monospace;
-            text-transform: uppercase;
-            font-size: 15px;
-            letter-spacing: 2px;
-            color: #6e6e6e;
-            margin-bottom: 0px;
-            font-weight: 700;
-        }
-
         .main-title {
-            font-size: 35px;
+            font-size: 30px;
             color: #222;
             font-weight: 600;
             margin-top: 3px;
-            margin-bottom: 38px;
+            margin-bottom: 10px;
             font-family: 'Times New Roman', serif;
+        }
+
+        .subtitle{
+            color: rgb(60, 60, 60);
+            font-size: 16px;
+            margin-bottom: 30px;
         }
 
         .input-group {
             margin-bottom: 22px;
             background-color: #EAEAEA;
             border-radius: 25px;
-            padding: 14px 25px;
+            padding: 12px 25px;
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1), 
                 0 6px 8px rgba(90, 90, 90, 0.2);
                 font-family: 'SF Pro Rounded', sans-serif;
@@ -97,7 +92,7 @@
 
         .input-group label {
             display: block;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             color: #5d5d5d;
             text-transform: uppercase;
@@ -118,28 +113,12 @@
             color: #999;
         }
 
-        .forgot-password {
-            align-self: flex-start;
-            margin-left: 25px;
-            font-size: 15px;
-            color: #587FA4;
-            text-decoration: none;
-            margin-bottom: 25px;
-            transition: color 0.2s;
-            font-family: 'SF Pro Rounded', sans-serif;
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-            color: #2b5c7e;
-        }
-
         .btn-submit {
             align-self: flex-end;
             background-color: #5b84a8;
             color: white;
             border: none;
-            padding: 11px 57px;
+            padding: 10px 57px;
             font-size: 15px;
             font-weight: 600;
             border-radius: 25px;

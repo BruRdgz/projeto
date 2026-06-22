@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinição de senha - Biblioteca Cultura</title>
+    <link rel="stylesheet" th:href="@{/css/esqueci-senha.css}">
+</head>
+
+<div class="login-container">
+        <div class="logo-panel">
+            <img th:src="@{/images/logo.png}" width="350px">
+        </div>
+
+        <div class="form-panel">
+            <h2 class="main-title">Redefinição de senha:</h2>
+            <p class="subtitle">A sua nova senha temporária será enviado para o email associado a sua conta.</p>
+
+            <form onsubmit="event.preventDefault();">
+                <div class="input-group">
+                    <label for="cpf">CPF</label>
+                    <input type="text" id="cpf" placeholder="Digite seu CPF...">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end;">
+                    <button type="submit" class="btn-submit">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

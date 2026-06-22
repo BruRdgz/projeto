@@ -14,4 +14,8 @@ public class ViewController {
     public String paginaCadastroFuncionario() {
         return "cadastro-funcionario"; 
     }
+    @GetMapping("/esqueci-senha")
+    public String paginaEsqueciSenha() {
+        return "esqueci-senha"; 
+    }
 }
