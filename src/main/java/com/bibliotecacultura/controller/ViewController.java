@@ -18,8 +18,12 @@ public class ViewController {
     public String paginaEsqueciSenha() {
         return "esqueci-senha"; 
     }
-        @GetMapping("/visualizar-acervo")
+    @GetMapping("/visualizar-acervo")
     public String paginaVisualizarAcervo() {
         return "visualizar-acervo"; 
+    }
+    @GetMapping("/redefinir-senha")
+    public String RedefinirSenha() {
+        return "redefinir-senha"; 
     }
 }
