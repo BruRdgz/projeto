@@ -1,7 +1,10 @@
 package com.bibliotecacultura.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.bibliotecacultura.entity.Funcionario;
 
 @Controller
 public class ViewController {
@@ -10,8 +13,11 @@ public class ViewController {
     public String paginaLogin() {
         return "login";
     }
+
     @GetMapping("/cadastro-funcionario")
-    public String paginaCadastroFuncionario() {
+    public String paginaCadastroFuncionario(Model model) {
+    model.addAttribute("funcionario", new Funcionario()); 
+    
         return "cadastro-funcionario"; 
     }
     @GetMapping("/esqueci-senha")
@@ -38,7 +44,6 @@ public class ViewController {
     public String ConsultaFuncionario() {
         return "consulta-funcionario"; 
     }
-
     @GetMapping("/perfil-cliente")
     public String PerfilCliente() {
         return "perfil-cliente"; 
