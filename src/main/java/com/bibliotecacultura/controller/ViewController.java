@@ -34,8 +34,13 @@ public class ViewController {
     public String RealizarEmprestimo() {
         return "realizar-emprestimo"; 
     }
-        @GetMapping("/consulta-funcionario")
+    @GetMapping("/consulta-funcionario")
     public String ConsultaFuncionario() {
         return "consulta-funcionario"; 
+    }
+
+    @GetMapping("/perfil-cliente")
+    public String PerfilCliente() {
+        return "perfil-cliente"; 
     }
 }

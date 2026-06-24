@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redefinição de senha</title>
+    <title>Consulta Funcionário</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!--icons importados do fontsawesome talvez não pegue ?-->
-    <link rel="stylesheet" th:href="@{/css/redefinir-senha.css}">
+    <link rel="stylesheet" th:href="@{/css/perfil-cliente.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
+
 <body>
-        <input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
+    <input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
 
     <label for="gatilho-menu-lateral" class="pelicula-escura"></label>
 
@@ -27,12 +29,6 @@
         <span class="categoria-titulo">Fluxo diário</span>
         <a href="/realizar-emprestimo" class="subitem-menu"><i class="fa-solid fa-book-open"></i> Realizar empréstimo </a>
         <a href="#" class="subitem-menu"><i class="fa-solid fa-book-bookmark"></i> Registrar devolução </a>
-    </div>
-    <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Acervo</span>
-        <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
-        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo livro </a>
-        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo exemplar </a>
     </div>
 
     <div class="grupo-menu-lateral">
@@ -89,36 +85,76 @@
         </div>
     </header>
 
-    <main class="container">
-        <div class="form-header">
-            <h1>Redefinir senha:</h1>
-            <p>Preencha os dados abaixo para criar uma nova senha:</p>
-        </div>
+<main class="container">
+        <h1>Perfil do cliente:</h1>
 
-        <form action="#" method="POST">
-            
-            <fieldset class="form-grid">
-                <div class="input-group full-width">
-                    <label for="nome">Senha atual:</label>
-                    <input type="password" id="senha-atual" name="senha-atual" required>
+        <section class="cliente-perfil-resumo card">
+            <div class="avatar-grande">
                 </div>
-                
-                <div class="input-group">
-                    <label for="cpf">Nova senha:</label>
-                    <input type="password" id="nova-senha" name="nova-senha" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="matricula">Confirmar nova senha:</label>
-                    <input type="password" id="confirmar-senha" name="confirmar-senha" required>
-                </div>
-            </fieldset>
-
-            <div class="btn-container">
-                <button type="submit" class="btn-submit">Salvar alterações</button>
+            <div class="info-resumo">
+                <p class="nome">João Silva</p>
+                <p>CPF: ###.###.###-##</p>
+                <p>Estudante</p>
             </div>
+        </section>
 
-        </form>
+        <section class="grid-secoes">
+            <section class="dados-cliente section-column card">
+                <h2>Dados:</h2>
+                <p><span class="label">Turma:</span><br>3 ano EM</p>
+                <p><span class="label">E-mail:</span><br>jessicaalves@email.com</p>
+                <p><span class="label">Telefone:</span><br>(XX)12345678</p>
+                <p><span class="label">Endereço:</span><br>Av. Lorem ipsum sit dolor, 100 Amet BR</p>
+            </section>
+
+            <section class="multas-cliente section-column card">
+                <h2>Multas:</h2>
+                <div class="multa-total">
+                    TOTAL DE MULTA: <span class="valor-total">R$ 3,50</span>
+                </div>
+                <div class="multa-item">
+                    <div class="barra-lateral multa-1"></div>
+                    <p class="titulo-livro">A Odisseia</p>
+                    <p class="valor">R$1,50</p>
+                </div>
+                <div class="multa-item">
+                    <div class="barra-lateral multa-2"></div>
+                    <p class="titulo-livro">Moreninha</p>
+                    <p class="valor">R$2,00</p>
+                </div>
+                <button class="btn btn-limpar-multa">LIMPAR MULTA(S)</button>
+            </section>
+        </section>
+
+        <section class="livros-emprestados">
+            <h2>Livros emprestados:</h2>
+            <div class="tabela-livros">
+                <div class="cabecalho-tabela">
+                    <div></div>
+                    <div>Nome</div>
+                    <div>Autor</div>
+                    <div>Data de Empréstimo</div>
+                    <div>Data de Devolução</div>
+                    <div>Situação</div>
+                </div>
+                <label class="linha-tabela" for="livro1">
+                    <div>
+                        <input type="checkbox" id="livro1">
+                    </div>
+                    <div>A Odisseia</div>
+                    <div>Homero</div>
+                    <div>15/01/2026</div>
+                    <div>22/01/2026</div>
+                    <div><span class="status-multa">Com multa</span></div>
+                </label>
+            </div>
+        </section>
+
+        <footer class="controles-renovacao">
+            <button class="btn btn-secundario">Renovar exemplar selecionado</button>
+            <button class="btn btn-secundario">Renovar todos</button>
+        </footer >
+
     </main>
 
 </body>
