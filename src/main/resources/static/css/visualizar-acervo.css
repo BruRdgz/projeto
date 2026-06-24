@@ -27,6 +27,9 @@
             cursor: pointer;
         }
 
+        .fa-bars{
+            font-size: 20px;
+        }
 
         .perfil-funcionario {
             display: flex;

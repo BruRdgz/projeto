@@ -26,4 +26,8 @@ public class ViewController {
     public String RedefinirSenha() {
         return "redefinir-senha"; 
     }
+    @GetMapping("/homescreen")
+    public String HomeScreen() {
+        return "homescreen"; 
+    }
 }
