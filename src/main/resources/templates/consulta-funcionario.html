@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página inicial</title>
+    <title>Consulta Funcionário</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!--icons importados do fontsawesome talvez não pegue ?-->
-    <link rel="stylesheet" th:href="@{/css/homescreen.css}">
+    <link rel="stylesheet" th:href="@{/css/consulta-funcionario.css}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
+
 <body>
     <input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
 
@@ -77,48 +78,3 @@
             </div>
         </div>
     </header>
-
-    <main class="container">
-        <div class="container-busca">
-            <div class="grupo-pesquisa">
-                <input type="text" class="campo-pesquisa" placeholder="Pesquisar livro por título...">
-                <button class="btn-pesquisa" aria-label="Buscar">
-                    <span class="material-icons lupa">search</span>
-                </button>
-            </div>
-        </div>
-
-        <section class="secao-acoes">
-            <h2 class="titulo-secao">Ações Rápidas:</h2>
-            
-            <div class="grade-botoes">
-                
-                <a href="/realizar-emprestimo" style="text-decoration: none;">
-                <button class="botao-acao">
-                    <i class="fa-solid fa-book-open"></i>
-                    <span class="texto-acao">Realizar empréstimo</span>
-                </button>
-                </a>
-
-                <button class="botao-acao">
-                    <i class="fa-solid fa-arrow-left-long"></i>
-                    <span class="texto-acao">Registrar devolução</span>
-                </button>
-
-                <button class="botao-acao">
-                    <i class="fa-regular fa-square-plus"></i>
-                    <span class="texto-acao">Cadastrar livro</span>
-                </button>
-
-                <button class="botao-acao">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <span class="texto-acao">Cadastrar exemplar</span>
-                </button>
-
-            </div>
-        </section>
-
-    </main>
-
-</body>
-</html>

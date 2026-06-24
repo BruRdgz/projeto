@@ -30,4 +30,12 @@ public class ViewController {
     public String HomeScreen() {
         return "homescreen"; 
     }
+    @GetMapping("/realizar-emprestimo")
+    public String RealizarEmprestimo() {
+        return "realizar-emprestimo"; 
+    }
+        @GetMapping("/consulta-funcionario")
+    public String ConsultaFuncionario() {
+        return "consulta-funcionario"; 
+    }
 }

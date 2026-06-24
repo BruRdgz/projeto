@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página inicial</title>
+    <title>Realizar empréstimo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!--icons importados do fontsawesome talvez não pegue ?-->
-    <link rel="stylesheet" th:href="@{/css/homescreen.css}">
+    <link rel="stylesheet" th:href="@{/css/realizar-emprestimo.css}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
+
 <body>
     <input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
 
@@ -78,46 +79,66 @@
         </div>
     </header>
 
-    <main class="container">
-        <div class="container-busca">
-            <div class="grupo-pesquisa">
-                <input type="text" class="campo-pesquisa" placeholder="Pesquisar livro por título...">
-                <button class="btn-pesquisa" aria-label="Buscar">
-                    <span class="material-icons lupa">search</span>
-                </button>
+<main class="main-container">
+        <h1 class="titulo-principal">Registrar Novo Empréstimo:</h1>
+
+        <div class="grid-conteudo">
+            <div class="coluna-esquerda">
+                <h2 class="secao-titulo">Identificação do Cliente</h2>
+                
+                <div class="grupo-campo">
+                    <label class="rotulo-campo">CPF DO CLIENTE:</label>
+                    <div class="busca-container">
+                        <input type="text" class="input-busca" value="">
+                        <button class="button-busca"></button>
+                    </div>
+                </div>
+
+                <a class="link-cadastro">Novo cliente? Cadastre-o primeiro.</a>
+
+                <div class="card-cliente">
+                    <h3 class="cliente-nome">João Silva</h3>
+                    <div class="cliente-info-linha">Status: Sem multa</div>
+                    <div class="cliente-info-linha">Multa(s) associada(s) ao(s) exemplar(es):</div>
+                    <div class="badge-livro">A Odisseia</div>
+
+                    <div class="box-multa">
+                        <div class="box-multa-titulo">Total multa:</div>
+                        <div class="box-multa-valor">R$0,00</div>
+                    </div>
+
+                    <div class="cliente-rodape">
+                        Está com os livros: A Odisseia e Moreninha
+                    </div>
+                </div>
+            </div>
+
+            <div class="divisor-vertical"></div>
+
+            <div class="coluna-direita">
+                <h2 class="secao-titulo">Registrar Livro</h2>
+
+                <div class="grupo-campo">
+                    <label class="rotulo-campo">EXEMPLAR EMPRESTADO:</label>
+                    <div class="busca-container">
+                        <input type="text" class="input-busca" value="">
+                        <button class="button-busca"></button>
+                    </div>
+                </div>
+
+                <div class="resultado-livro">
+                    <div class="livro-detalhes">
+                        <h4>O Gato Preto</h4>
+                        <p>Edgar Alan Poe</p>
+                    </div>
+                    <button class="button-adicionar"></button>
+                </div>
+            </div>
+
+            <div class="container-acao">
+                <button class="button-concluir">EFETUAR EMPRÉSTIMO</button>
             </div>
         </div>
-
-        <section class="secao-acoes">
-            <h2 class="titulo-secao">Ações Rápidas:</h2>
-            
-            <div class="grade-botoes">
-                
-                <a href="/realizar-emprestimo" style="text-decoration: none;">
-                <button class="botao-acao">
-                    <i class="fa-solid fa-book-open"></i>
-                    <span class="texto-acao">Realizar empréstimo</span>
-                </button>
-                </a>
-
-                <button class="botao-acao">
-                    <i class="fa-solid fa-arrow-left-long"></i>
-                    <span class="texto-acao">Registrar devolução</span>
-                </button>
-
-                <button class="botao-acao">
-                    <i class="fa-regular fa-square-plus"></i>
-                    <span class="texto-acao">Cadastrar livro</span>
-                </button>
-
-                <button class="botao-acao">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <span class="texto-acao">Cadastrar exemplar</span>
-                </button>
-
-            </div>
-        </section>
-
     </main>
 
 </body>
