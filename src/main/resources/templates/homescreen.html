@@ -96,14 +96,17 @@
     </header>
 
     <main class="container">
-        <div class="container-busca">
-            <div class="grupo-pesquisa">
-                <input type="text" class="campo-pesquisa" placeholder="Pesquisar livro por título...">
-                <button class="btn-pesquisa" aria-label="Buscar">
-                    <span class="material-icons lupa">search</span>
-                </button>
+        <form method="get" action="/consulta-livro">
+            <input type="hidden" name="filtro" value="titulo">
+            <div class="container-busca">
+                <div class="grupo-pesquisa">
+                    <input type="text" name="termo" class="campo-pesquisa" placeholder="Pesquisar livro por título...">
+                    <button type="submit" class="btn-pesquisa" aria-label="Buscar">
+                        <span class="material-icons lupa">search</span>
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
 
         <section class="secao-acoes">
             <h2 class="titulo-secao">Ações Rápidas:</h2>
