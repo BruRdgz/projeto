@@ -8,6 +8,17 @@
     <link rel="stylesheet" th:href="@{/css/cadastro-funcionario.css}">
 </head>
 <body>
+    <input type="checkbox" id="gatilho-modal-sair" style="display: none;">
+    <label for="gatilho-modal-sair" class="modal-overlay"></label>
+    <div class="modal-confirmacao">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <p>Deseja realmente sair?</p>
+        <div class="modal-botoes">
+            <a href="/login" class="btn-confirmar">Sim, sair</a>
+            <label for="gatilho-modal-sair" class="btn-cancelar">Voltar</label>
+        </div>
+    </div>
+
     <input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
 
     <label for="gatilho-menu-lateral" class="pelicula-escura"></label>
@@ -51,7 +62,7 @@
             <div class="grupo-menu-lateral">
                 <span class="categoria-titulo">Configurações</span>
                 <a href="/redefinir-senha" class="subitem-menu"><i class="fa-solid fa-gear"></i> Alterar minha senha</a>
-                <a href="#" class="subitem-menu"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair </a>
+                <label for="gatilho-modal-sair" class="subitem-menu"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair </label>
             </div>
         </nav>
     </aside>
@@ -77,7 +88,7 @@
                 </label>
                 <div class="menu-dropdown">
                     <a href="#"><i class="fa-regular fa-user"></i> Visualizar perfil</a>
-                    <a href="#" class="opcao-sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
+                    <label for="gatilho-modal-sair" class="opcao-sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</label>
                 </div>
             </div>
         </div>
