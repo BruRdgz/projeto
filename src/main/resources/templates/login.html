@@ -7,33 +7,42 @@
 </head>
 <body>
 <div class="login-container">
-        <div class="logo-panel">
-            <img th:src="@{/images/logo.png}" width="350px">
-        </div>
-
-        <div class="form-panel">
-            <div class="subtitle">Seja bem vindo, bibliotecário!</div>
-            <h2 class="main-title">Acesse sua conta:</h2>
-
-            <form onsubmit="event.preventDefault();">
-                <div class="input-group">
-                    <label for="matricula">Matrícula:</label>
-                    <input type="text" id="matricula" placeholder="Digite sua matrícula...">
-                </div>
-
-                <div class="input-group">
-                    <label for="senha">Senha:</label>
-                    <input type="password" id="senha" value="" placeholder="●●●●●●">
-                </div>
-
-                <a href="/esqueci-senha" class="forgot-password">Esqueci a minha senha</a>
-
-                <div style="display: flex; justify-content: flex-end;">
-                    <button type="submit" class="btn-submit">Entrar</button>
-                </div>
-            </form>
-        </div>
+    <div class="logo-panel">
+        <img th:src="@{/images/logo.png}" width="350px" alt="Logo">
     </div>
 
+    <div class="form-panel">
+        <div class="subtitle">Seja bem vindo, bibliotecário!</div>
+        <h2 class="main-title">Acesse sua conta:</h2>
+
+        <!-- Mensagem de erro de login -->
+        <div th:if="${erro}" class="msg-erro" style="
+             color:#c0392b; background:#fde8e8; border:1px solid #e57373;
+             border-radius:6px; padding:10px 14px; margin-bottom:14px; font-size:14px;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-right:6px;"></i>
+            <span th:text="${erro}"></span>
+        </div>
+
+        <form method="POST" th:action="@{/login}">
+            <div class="input-group">
+                <label for="matricula">Matrícula:</label>
+                <input type="text" id="matricula" name="matricula"
+                       placeholder="Digite sua matrícula..." required autofocus>
+            </div>
+
+            <div class="input-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha"
+                       placeholder="●●●●●●" required>
+            </div>
+
+            <a href="/esqueci-senha" class="forgot-password">Esqueci a minha senha</a>
+
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="submit" class="btn-submit">Entrar</button>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>

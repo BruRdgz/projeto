@@ -3,6 +3,8 @@ package com.bibliotecacultura.controller;
 import com.bibliotecacultura.dto.FuncionarioDTO;
 import com.bibliotecacultura.entity.Funcionario;
 import com.bibliotecacultura.service.FuncionarioService;
+import com.bibliotecacultura.session.SessaoFuncionario;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 
+/**
+ * Rotas /funcionarios — apenas BIBLIOTECARIO_ADM tem acesso.
+ * O SessaoInterceptor já barra quem não tem cargo ADM antes de entrar aqui;
+ * mas validamos novamente no POST por segurança.
+ */
 @Controller
 @RequestMapping("/funcionarios")
 public class FuncionarioController {
@@ -22,58 +29,85 @@ public class FuncionarioController {
         this.funcionarioService = funcionarioService;
     }
 
-    // ── GET /funcionarios — list / search (RF015) ─────────────────────────────
+    /** Verifica sessão ADM e lança redirect se necessário */
+    private boolean naoEAdm(HttpSession session) {
+        SessaoFuncionario s = (SessaoFuncionario) session.getAttribute("sessao");
+        return s == null || !s.isAdm();
+    }
+
+    // ── GET /funcionarios — lista / pesquisa ──────────────────────────────────
     @GetMapping
     public String listar(@RequestParam(required = false) String q, Model model) {
         model.addAttribute("funcionarios", funcionarioService.listarTodos(q));
         model.addAttribute("q", q);
-        return "funcionarios/lista";
+        return "consulta-funcionario";
     }
 
-    // ── GET /funcionarios/novo — blank form (RF014) ───────────────────────────
-    @GetMapping("/novo")
-    public String novoForm(Model model) {
-        model.addAttribute("funcionario", new FuncionarioDTO());
-        model.addAttribute("cargos", Arrays.asList(Funcionario.Cargo.values()));
-        return "funcionarios/form";
-    }
-
-    // ── POST /funcionarios — save new staff (RF014) ───────────────────────────
+    // ── POST /funcionarios — salva novo funcionário ───────────────────────────
     @PostMapping
     public String salvar(@Valid @ModelAttribute("funcionario") FuncionarioDTO dto,
                          BindingResult result,
+                         HttpSession session,
                          Model model,
                          RedirectAttributes ra) {
+
+        if (naoEAdm(session)) {
+            ra.addFlashAttribute("erro", "Acesso negado.");
+            return "redirect:/homescreen";
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("cargos", Arrays.asList(Funcionario.Cargo.values()));
-            return "funcionarios/form";
+            return "cadastro-funcionario";
         }
-        funcionarioService.cadastrar(dto);
-        ra.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
-        return "redirect:/funcionarios";
+
+        try {
+            funcionarioService.cadastrar(dto);
+            ra.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/cadastro-funcionario";
+        }
+
+        return "redirect:/consulta-funcionario";
     }
 
-    // ── GET /funcionarios/{id}/editar — pre-filled form (RF015) ──────────────
+    // ── GET /funcionarios/{id}/editar ─────────────────────────────────────────
     @GetMapping("/{id}/editar")
-    public String editarForm(@PathVariable Long id, Model model) {
+    public String editarForm(@PathVariable Long id, HttpSession session, Model model) {
+        if (naoEAdm(session)) return "redirect:/homescreen?acesso=negado";
+
         model.addAttribute("funcionario", funcionarioService.buscarPorId(id));
         model.addAttribute("cargos", Arrays.asList(Funcionario.Cargo.values()));
-        return "funcionarios/form";
+        return "cadastro-funcionario";
     }
 
-    // ── POST /funcionarios/{id} — update staff (RF015) ────────────────────────
+    // ── POST /funcionarios/{id} — atualiza funcionário ────────────────────────
     @PostMapping("/{id}")
     public String atualizar(@PathVariable Long id,
                             @Valid @ModelAttribute("funcionario") FuncionarioDTO dto,
                             BindingResult result,
+                            HttpSession session,
                             Model model,
                             RedirectAttributes ra) {
+
+        if (naoEAdm(session)) {
+            ra.addFlashAttribute("erro", "Acesso negado.");
+            return "redirect:/homescreen";
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("cargos", Arrays.asList(Funcionario.Cargo.values()));
-            return "funcionarios/form";
+            return "cadastro-funcionario";
         }
-        funcionarioService.alterar(id, dto);
-        ra.addFlashAttribute("sucesso", "Funcionário atualizado com sucesso!");
-        return "redirect:/funcionarios";
+
+        try {
+            funcionarioService.alterar(id, dto);
+            ra.addFlashAttribute("sucesso", "Funcionário atualizado com sucesso!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("erro", e.getMessage());
+        }
+
+        return "redirect:/consulta-funcionario";
     }
 }

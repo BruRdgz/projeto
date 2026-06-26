@@ -3,142 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página inicial</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!--icons importados do fontsawesome talvez não pegue ?-->
+    <title>Página inicial - Biblioteca Cultura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/homescreen.css}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <input type="checkbox" id="gatilho-modal-sair" style="display: none;">
-    <label for="gatilho-modal-sair" class="modal-overlay"></label>
-    <div class="modal-confirmacao">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        <p>Deseja realmente sair?</p>
-        <div class="modal-botoes">
-            <a href="/login" class="btn-confirmar">Sim, sair</a>
-            <label for="gatilho-modal-sair" class="btn-cancelar">Voltar</label>
-        </div>
+<!-- Modal sair -->
+<input type="checkbox" id="gatilho-modal-sair" style="display: none;">
+<label for="gatilho-modal-sair" class="modal-overlay"></label>
+<div class="modal-confirmacao">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <p>Deseja realmente sair?</p>
+    <div class="modal-botoes">
+        <a href="/logout" class="btn-confirmar">Sim, sair</a>
+        <label for="gatilho-modal-sair" class="btn-cancelar">Voltar</label>
     </div>
+</div>
 
-    <input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
+<input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
+<label for="gatilho-menu-lateral" class="pelicula-escura"></label>
 
-    <label for="gatilho-menu-lateral" class="pelicula-escura"></label>
-
-    <aside class="menu-esquerda">
-        <div class="menu-esquerda-topo">
-            <h2>MENU</h2>
-            <label for="gatilho-menu-lateral" class="botao-fechar-menu"><i class="fa-solid fa-xmark"></i></label>
-        </div>
+<aside class="menu-esquerda">
+    <div class="menu-esquerda-topo">
+        <h2>MENU</h2>
+        <label for="gatilho-menu-lateral" class="botao-fechar-menu">
+            <i class="fa-solid fa-xmark"></i>
+        </label>
+    </div>
 
     <nav class="links-menu-lateral">
-    <div class="grupo-menu-lateral">
-        <a href="/homescreen" class="subitem-menu"><i class="fa-solid fa-house"></i>Página inicial</a>
-    </div>
-
-    <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Fluxo diário</span>
-        <a href="/realizar-emprestimo" class="subitem-menu"><i class="fa-solid fa-book-open"></i> Realizar empréstimo </a>
-        <a href="#" class="subitem-menu"><i class="fa-solid fa-book-bookmark"></i> Registrar devolução </a>
-    </div>
-
-    <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Acervo</span>
-        <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
-        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo livro </a>
-        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo exemplar </a>
-    </div>
-
-    <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Usuários</span>
-        <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
-        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo cliente</a>
-    </div>
-
-    <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Administração</span>
-        <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar funcionários</a>
-        <a href="/cadastro-funcionario" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo funcionário</a>
-    </div>
+        <div class="grupo-menu-lateral">
+            <a href="/homescreen" class="subitem-menu">
+                <i class="fa-solid fa-house"></i> Página inicial
+            </a>
+        </div>
 
         <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Configurações</span>
-        <a href="/redefinir-senha" class="subitem-menu"><i class="fa-solid fa-gear"></i> Alterar minha senha</a>
-        <label for="gatilho-modal-sair" class="subitem-menu"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair </label>
-    </div>
-</nav>
-    </aside>
+            <span class="categoria-titulo">Fluxo diário</span>
+            <a href="/realizar-emprestimo" class="subitem-menu">
+                <i class="fa-solid fa-book-open"></i> Realizar empréstimo
+            </a>
+            <a href="#" class="subitem-menu">
+                <i class="fa-solid fa-book-bookmark"></i> Registrar devolução
+            </a>
+        </div>
 
-    <header>
-        <div class="navbar">
-            <div class="nav-left">
-                <label for="gatilho-menu-lateral" class="nav-left" style="cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                    <i class="fa-solid fa-bars"></i>
-                    <span style="font-size: 18px; user-select: none;">MENU</span>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Acervo</span>
+            <a href="/visualizar-acervo" class="subitem-menu">
+                <i class="fa-solid fa-book"></i> Visualizar Acervo
+            </a>
+            <a href="#" class="subitem-menu">
+                <i class="fa-regular fa-square-plus"></i> Cadastrar novo livro
+            </a>
+            <a href="#" class="subitem-menu">
+                <i class="fa-regular fa-square-plus"></i> Cadastrar novo exemplar
+            </a>
+        </div>
+
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Usuários</span>
+            <a href="#" class="subitem-menu">
+                <i class="fa-solid fa-users"></i> Visualizar clientes
+            </a>
+            <a href="#" class="subitem-menu">
+                <i class="fa-regular fa-square-plus"></i> Cadastrar novo cliente
+            </a>
+        </div>
+
+        <!-- Seção Administração: visível apenas para BIBLIOTECARIO_ADM -->
+        <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
+            <span class="categoria-titulo">Administração</span>
+            <a href="/consulta-funcionario" class="subitem-menu">
+                <i class="fa-solid fa-users"></i> Visualizar funcionários
+            </a>
+            <a href="/cadastro-funcionario" class="subitem-menu">
+                <i class="fa-regular fa-square-plus"></i> Cadastrar novo funcionário
+            </a>
+        </div>
+
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Configurações</span>
+            <a href="/redefinir-senha" class="subitem-menu">
+                <i class="fa-solid fa-gear"></i> Alterar minha senha
+            </a>
+            <label for="gatilho-modal-sair" class="subitem-menu" style="cursor:pointer;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+            </label>
+        </div>
+    </nav>
+</aside>
+
+<header>
+    <div class="navbar">
+        <div class="nav-left">
+            <label for="gatilho-menu-lateral" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                <i class="fa-solid fa-bars"></i>
+                <span style="font-size:18px; user-select:none;">MENU</span>
+            </label>
+        </div>
+
+        <div class="brand-title">
+            <img th:src="@{/images/logo-horizontal.png}" width="230px" alt="Biblioteca Cultura">
+        </div>
+
+        <div class="perfil-container">
+            <input type="checkbox" id="gatilho-menu" style="display: none;">
+            <label for="gatilho-menu" class="perfil-funcionario">
+                <p style="font-size:18px;" th:text="${sessao != null ? sessao.nome : 'Usuário'}">Usuário</p>
+                <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            </label>
+            <div class="menu-dropdown">
+                <a href="#"><i class="fa-regular fa-user"></i> Visualizar perfil</a>
+                <label for="gatilho-modal-sair" class="opcao-sair" style="cursor:pointer;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
                 </label>
-            </div>
-
-            <div class="brand-title">
-                <img th:src="@{/images/logo-horizontal.png}" width="230px">
-            </div>
-
-            <div class="perfil-container">
-                <input type="checkbox" id="gatilho-menu" style="display: none;">
-                <label for="gatilho-menu" class="perfil-funcionario">
-                    <p style="font-size: 18px;">Jessica Alves</p>
-                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
-                </label>
-                <div class="menu-dropdown">
-                    <a href="#"><i class="fa-regular fa-user"></i> Visualizar perfil</a>
-                    <label for="gatilho-modal-sair" class="opcao-sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</label>
-                </div>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main class="container">
-        <form method="get" action="/consulta-livro">
-            <input type="hidden" name="filtro" value="titulo">
-            <div class="container-busca">
-                <div class="grupo-pesquisa">
-                    <input type="text" name="termo" class="campo-pesquisa" placeholder="Pesquisar livro por título...">
-                    <button type="submit" class="btn-pesquisa" aria-label="Buscar">
-                        <span class="material-icons lupa">search</span>
-                    </button>
-                </div>
+<main class="container">
+    <!-- Mensagens flash -->
+    <div th:if="${aviso}" class="msg-aviso" style="
+             color:#7d6608; background:#fef9e7; border:1px solid #f4d03f;
+             border-radius:6px; padding:10px 14px; margin-bottom:16px;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span th:text="${aviso}"></span>
+    </div>
+    <div th:if="${sucesso}" class="msg-sucesso" style="
+             color:#1e8449; background:#eafaf1; border:1px solid #58d68d;
+             border-radius:6px; padding:10px 14px; margin-bottom:16px;">
+        <i class="fa-solid fa-circle-check"></i>
+        <span th:text="${sucesso}"></span>
+    </div>
+
+    <form method="get" action="/consulta-livro">
+        <input type="hidden" name="filtro" value="titulo">
+        <div class="container-busca">
+            <div class="grupo-pesquisa">
+                <input type="text" name="termo" class="campo-pesquisa"
+                       placeholder="Pesquisar livro por título...">
+                <button type="submit" class="btn-pesquisa" aria-label="Buscar">
+                    <span class="material-icons lupa">search</span>
+                </button>
             </div>
-        </form>
+        </div>
+    </form>
 
-        <section class="secao-acoes">
-            <h2 class="titulo-secao">Ações Rápidas:</h2>
-            
-            <div class="grade-botoes">
-                
-                <a href="/realizar-emprestimo" style="text-decoration: none;">
+    <section class="secao-acoes">
+        <h2 class="titulo-secao">Ações Rápidas:</h2>
+
+        <div class="grade-botoes">
+            <a href="/realizar-emprestimo" style="text-decoration: none;">
                 <button class="botao-acao">
                     <i class="fa-solid fa-book-open"></i>
                     <span class="texto-acao">Realizar empréstimo</span>
                 </button>
-                </a>
+            </a>
 
-                <button class="botao-acao">
-                    <i class="fa-solid fa-arrow-left-long"></i>
-                    <span class="texto-acao">Registrar devolução</span>
-                </button>
+            <button class="botao-acao">
+                <i class="fa-solid fa-arrow-left-long"></i>
+                <span class="texto-acao">Registrar devolução</span>
+            </button>
 
-                <button class="botao-acao">
-                    <i class="fa-regular fa-square-plus"></i>
-                    <span class="texto-acao">Cadastrar livro</span>
-                </button>
+            <button class="botao-acao">
+                <i class="fa-regular fa-square-plus"></i>
+                <span class="texto-acao">Cadastrar livro</span>
+            </button>
 
-                <button class="botao-acao">
-                    <i class="fa-solid fa-layer-group"></i>
-                    <span class="texto-acao">Cadastrar exemplar</span>
-                </button>
-
-            </div>
-        </section>
-
-    </main>
-
+            <button class="botao-acao">
+                <i class="fa-solid fa-layer-group"></i>
+                <span class="texto-acao">Cadastrar exemplar</span>
+            </button>
+        </div>
+    </section>
+</main>
 </body>
 </html>
