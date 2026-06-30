@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Cliente - Biblioteca Cultura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/perfil-cliente.css}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<!-- Modal sair -->
+<input type="checkbox" id="gatilho-modal-sair" style="display: none;">
+<label for="gatilho-modal-sair" class="modal-overlay"></label>
+<div class="modal-confirmacao">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <p>Deseja realmente sair?</p>
+    <div class="modal-botoes">
+        <a href="/logout" class="btn-confirmar">Sim, sair</a>
+        <label for="gatilho-modal-sair" class="btn-cancelar">Voltar</label>
+    </div>
+</div>
+
+<input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
+<label for="gatilho-menu-lateral" class="pelicula-escura"></label>
+
+<aside class="menu-esquerda">
+    <div class="menu-esquerda-topo">
+        <label for="gatilho-menu-lateral" class="botao-fechar-menu">
+            <i class="fa-solid fa-xmark"></i>
+        </label>
+    </div>
+    <nav class="links-menu-lateral">
+        <div class="grupo-menu-lateral">
+            <a href="/homescreen" class="subitem-menu"><i class="fa-solid fa-house"></i> Página inicial</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Fluxo diário</span>
+            <a href="/realizar-emprestimo" class="subitem-menu"><i class="fa-solid fa-book-open"></i> Realizar empréstimo</a>
+            <a href="#" class="subitem-menu"><i class="fa-solid fa-book-bookmark"></i> Registrar devolução</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Acervo</span>
+            <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
+            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo livro</a>
+            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo exemplar</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Usuários</span>
+            <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo cliente</a>
+        </div>
+        <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
+            <span class="categoria-titulo">Administração</span>
+            <a href="/consulta-funcionario" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar funcionários</a>
+            <a href="/cadastro-funcionario" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo funcionário</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Configurações</span>
+            <a href="/redefinir-senha" class="subitem-menu"><i class="fa-solid fa-gear"></i> Alterar minha senha</a>
+            <label for="gatilho-modal-sair" class="subitem-menu" style="cursor:pointer;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+            </label>
+        </div>
+    </nav>
+</aside>
+
+<header>
+    <div class="navbar">
+        <div class="nav-left">
+            <label for="gatilho-menu-lateral" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                <i class="fa-solid fa-bars"></i>
+                <span style="font-size:18px; user-select:none;">MENU</span>
+            </label>
+        </div>
+        <div class="brand-title">
+            <img th:src="@{/images/logo-horizontal.png}" width="230px" alt="Logo">
+        </div>
+        <div class="perfil-container">
+            <input type="checkbox" id="gatilho-menu" style="display: none;">
+            <label for="gatilho-menu" class="perfil-funcionario">
+                <p style="font-size:18px;" th:text="${sessao != null ? sessao.nome : 'Usuário'}">Usuário</p>
+                <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            </label>
+            <div class="menu-dropdown">
+                <a href="#"><i class="fa-regular fa-user"></i> Visualizar perfil</a>
+                <label for="gatilho-modal-sair" class="opcao-sair" style="cursor:pointer;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+                </label>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <h1>Perfil do cliente:</h1>
+
+    <!-- Erro ao buscar cliente -->
+    <div th:if="${erro}" style="color:#c0392b; background:#fde8e8; border:1px solid #e57373; border-radius:6px; padding:14px; margin-bottom:16px;">
+        <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${erro}"></span>
+    </div>
+
+    <!-- Formulário de busca -->
+    <form th:if="${cliente == null}" method="get" action="/perfil-cliente"
+          style="display:flex; gap:8px; margin-bottom:24px;">
+        <input type="text" name="cpf" th:value="${cpf}" placeholder="Digite o CPF do cliente..."
+               style="flex:1; padding:10px 14px; border:1px solid #ccc; border-radius:6px; font-size:15px;">
+        <button type="submit" style="padding:10px 20px; background:#2563eb; color:#fff; border:none; border-radius:6px; cursor:pointer;">
+            <i class="fa-solid fa-magnifying-glass"></i> Buscar
+        </button>
+    </form>
+
+    <!-- Dados do cliente -->
+    <th:block th:if="${cliente != null}">
+        <section class="cliente-perfil-resumo card">
+            <div class="avatar-grande"></div>
+            <div class="info-resumo">
+                <p class="nome" th:text="${cliente.nome}">Nome do Cliente</p>
+                <p th:text="'CPF: ' + ${cliente.cpf}">CPF</p>
+                <p th:switch="${cliente.statusSituacional}">
+                    <span th:case="'SEM_MULTA'" style="color:#15803d; font-weight:600;">✔ Sem multa</span>
+                    <span th:case="'COM_MULTA'"  style="color:#d97706; font-weight:600;">⚠ Com multa</span>
+                    <span th:case="*"            style="color:#dc2626; font-weight:600;">✖ Bloqueado</span>
+                </p>
+            </div>
+        </section>
+
+        <section class="grid-secoes">
+            <section class="dados-cliente section-column card">
+                <h2>Dados:</h2>
+                <p><span class="label">E-mail:</span><br>
+                    <span th:text="${cliente.email}">—</span></p>
+                <p><span class="label">Telefone:</span><br>
+                    <span th:text="${cliente.telefone}">—</span></p>
+            </section>
+
+            <section class="multas-cliente section-column card">
+                <h2>Multas:</h2>
+                <div class="multa-total">
+                    TOTAL DE MULTA:
+                    <span class="valor-total"
+                          th:text="'R$ ' + ${#numbers.formatDecimal(cliente.saldoMulta, 1, 2)}">
+                            R$ 0,00
+                        </span>
+                </div>
+
+                <!-- Empréstimos com multa -->
+                <th:block th:if="${historico != null}">
+                    <div th:each="emp, st : ${historico}"
+                         th:if="${emp.multaAplicada != null and emp.multaAplicada > 0}"
+                         class="multa-item">
+                        <div th:class="'barra-lateral multa-' + ${st.count}"></div>
+                        <p class="titulo-livro" th:text="${emp.tituloLivro}">Título</p>
+                        <p class="valor" th:text="'R$' + ${#numbers.formatDecimal(emp.multaAplicada, 1, 2)}"></p>
+                    </div>
+                </th:block>
+
+                <p th:if="${cliente.saldoMulta == 0}" style="color:#64748b; font-size:14px;">
+                    Nenhuma multa pendente.
+                </p>
+
+                <form th:if="${cliente.saldoMulta > 0}"
+                      method="POST" action="/circulacao/multas/quitar">
+                    <input type="hidden" name="cpf" th:value="${cliente.cpf}">
+                    <button type="submit" class="btn btn-limpar-multa"
+                            onclick="return confirm('Confirma a quitação da multa?')">
+                        LIMPAR MULTA(S)
+                    </button>
+                </form>
+            </section>
+        </section>
+
+        <section class="livros-emprestados">
+            <h2>Livros emprestados:</h2>
+
+            <div th:if="${historico == null or #lists.isEmpty(historico)}"
+                 style="color:#94a3b8; margin-top:8px;">
+                Nenhum empréstimo ativo.
+            </div>
+
+            <div class="tabela-livros" th:unless="${historico == null or #lists.isEmpty(historico)}">
+                <div class="cabecalho-tabela">
+                    <div></div>
+                    <div>Nome</div>
+                    <div>Autor</div>
+                    <div>Data de Empréstimo</div>
+                    <div>Data de Devolução</div>
+                    <div>Situação</div>
+                </div>
+                <label class="linha-tabela" th:each="emp, st : ${historico}"
+                       th:for="'livro' + ${st.index}">
+                    <div>
+                        <input type="checkbox" th:id="'livro' + ${st.index}">
+                    </div>
+                    <div th:text="${emp.tituloLivro}">Título</div>
+                    <div th:text="${emp.autorLivro}">Autor</div>
+                    <div th:text="${emp.dataSaida != null ? #temporals.format(emp.dataSaida, 'dd/MM/yyyy') : '—'}">—</div>
+                    <div th:text="${emp.dataPrevisao != null ? #temporals.format(emp.dataPrevisao, 'dd/MM/yyyy') : '—'}">—</div>
+                    <div>
+                            <span th:if="${emp.dataDevolucaoReal == null}"
+                                  th:class="${emp.multaAplicada > 0} ? 'status-multa' : ''"
+                                  th:text="${emp.multaAplicada > 0} ? 'Com multa' : 'Em dia'">
+                            </span>
+                        <span th:unless="${emp.dataDevolucaoReal == null}" style="color:#94a3b8;">
+                                Devolvido
+                            </span>
+                    </div>
+                </label>
+            </div>
+        </section>
+
+        <footer class="controles-renovacao">
+            <form method="POST" style="display:inline;">
+                <button type="button" class="btn btn-secundario"
+                        onclick="alert('Selecione um exemplar para renovar.')">
+                    Renovar exemplar selecionado
+                </button>
+            </form>
+        </footer>
+    </th:block>
+</main>
+</body>
+</html>

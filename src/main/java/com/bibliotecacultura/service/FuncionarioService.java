@@ -6,6 +6,7 @@ import com.bibliotecacultura.exception.DuplicadoException;
 import com.bibliotecacultura.exception.EntidadeNaoEncontradaException;
 import com.bibliotecacultura.exception.NegocioException;
 import com.bibliotecacultura.repository.FuncionarioRepository;
+import com.bibliotecacultura.session.SessaoFuncionario;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,28 +37,27 @@ public class FuncionarioService {
     }
 
     /**
-     * RF001 — validar credenciais para login.
-     * Retorna o DTO do funcionário se válido, lança NegocioException caso contrário.
+     * RF001 — valida credenciais e retorna um objeto de sessão.
      *
-     * NOTA: as senhas são armazenadas como texto simples aqui como um placeholder.
-     * Quando você adicionar o Spring Security (a tarefa de autenticação adiada), substitua isto por
-     * uma verificação PasswordEncoder.matches().
+     * NOTA: senhas são comparadas em texto simples aqui como placeholder.
+     * Quando adicionar Spring Security, substitua por:
+     *   passwordEncoder.matches(senha, f.getSenhaHash())
      */
-    public FuncionarioDTO autenticar(String matricula, String senha) {
+    public SessaoFuncionario autenticar(String matricula, String senha) {
         Funcionario f = funcionarioRepo.findByMatriculaAndAtivoTrue(matricula)
                 .orElseThrow(() -> new NegocioException("Matrícula ou senha inválidos."));
 
-        // TODO: substituir por passwordEncoder.matches(senha, f.getSenhaHash())
+        // TODO: passwordEncoder.matches(senha, f.getSenhaHash())
         if (!f.getSenhaHash().equals(senha)) {
             throw new NegocioException("Matrícula ou senha inválidos.");
         }
 
-        return toDTO(f);
+        return new SessaoFuncionario(f.getId(), f.getNome(), f.getMatricula(), f.getCargo());
     }
 
     // ----------------------------------------------------------------- ESCRITA
 
-    /** RF014 — cadastrar um novo membro da equipe. */
+    /** RF014 — cadastrar novo funcionário. Somente BIBLIOTECARIO_ADM pode chamar este método. */
     @Transactional
     public FuncionarioDTO cadastrar(FuncionarioDTO dto) {
         if (funcionarioRepo.existsByCpf(dto.getCpf())) {
@@ -75,14 +75,14 @@ public class FuncionarioService {
         f.setCpf(dto.getCpf());
         f.setMatricula(dto.getMatricula());
         f.setCargo(Funcionario.Cargo.valueOf(dto.getCargo()));
-        // TODO: armazenar passwordEncoder.encode(dto.getSenha()) em vez disso
+        // TODO: f.setSenhaHash(passwordEncoder.encode(dto.getSenha()));
         f.setSenhaHash(dto.getSenha());
         f.setAtivo(true);
 
         return toDTO(funcionarioRepo.save(f));
     }
 
-    /** RF015 — atualizar nome, cargo ou status de ativo. */
+    /** RF015 — atualizar nome, cargo ou status ativo de um funcionário. */
     @Transactional
     public FuncionarioDTO alterar(Long id, FuncionarioDTO dto) {
         Funcionario f = funcionarioRepo.findById(id)
@@ -92,7 +92,7 @@ public class FuncionarioService {
         f.setCargo(Funcionario.Cargo.valueOf(dto.getCargo()));
         f.setAtivo(dto.isAtivo());
 
-        // Atualizar senha apenas se uma nova foi fornecida
+        // Atualiza senha somente se uma nova foi fornecida
         if (dto.getSenha() != null && !dto.getSenha().isBlank()) {
             // TODO: f.setSenhaHash(passwordEncoder.encode(dto.getSenha()));
             f.setSenhaHash(dto.getSenha());

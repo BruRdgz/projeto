@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redefinição de senha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!--icons importados do fontsawesome talvez não pegue ?-->
+    <link rel="stylesheet" th:href="@{/css/redefinir-senha.css}">
+</head>
+<body>
+    <input type="checkbox" id="gatilho-modal-sair" style="display: none;">
+    <label for="gatilho-modal-sair" class="modal-overlay"></label>
+    <div class="modal-confirmacao">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <p>Deseja realmente sair?</p>
+        <div class="modal-botoes">
+            <a href="/login" class="btn-confirmar">Sim, sair</a>
+            <label for="gatilho-modal-sair" class="btn-cancelar">Voltar</label>
+        </div>
+    </div>
+        <input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
+
+    <label for="gatilho-menu-lateral" class="pelicula-escura"></label>
+
+    <aside class="menu-esquerda">
+        <div class="menu-esquerda-topo">
+            <h2>MENU</h2>
+            <label for="gatilho-menu-lateral" class="botao-fechar-menu"><i class="fa-solid fa-xmark"></i></label>
+        </div>
+
+    <nav class="links-menu-lateral">
+    <div class="grupo-menu-lateral">
+        <a href="/homescreen" class="subitem-menu"><i class="fa-solid fa-house"></i>Página inicial</a>
+    </div>
+
+    <div class="grupo-menu-lateral">
+        <span class="categoria-titulo">Fluxo diário</span>
+        <a href="/realizar-emprestimo" class="subitem-menu"><i class="fa-solid fa-book-open"></i> Realizar empréstimo </a>
+        <a href="#" class="subitem-menu"><i class="fa-solid fa-book-bookmark"></i> Registrar devolução </a>
+    </div>
+    <div class="grupo-menu-lateral">
+        <span class="categoria-titulo">Acervo</span>
+        <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
+        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo livro </a>
+        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo exemplar </a>
+    </div>
+
+    <div class="grupo-menu-lateral">
+        <span class="categoria-titulo">Usuários</span>
+        <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo cliente</a>
+    </div>
+
+    <div class="grupo-menu-lateral">
+        <span class="categoria-titulo">Administração</span>
+        <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar funcionários</a>
+        <a href="/cadastro-funcionario" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo funcionário</a>
+    </div>
+
+        <div class="grupo-menu-lateral">
+        <span class="categoria-titulo">Configurações</span>
+        <a href="/redefinir-senha" class="subitem-menu"><i class="fa-solid fa-gear"></i> Alterar minha senha</a>
+        <label for="gatilho-modal-sair" class="subitem-menu"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair </label>
+    </div>
+</nav>
+    </aside>
+
+    <header>
+        <div class="navbar">
+            <div class="nav-left">
+                <label for="gatilho-menu-lateral" class="nav-left" style="cursor: pointer; display: flex; align-items: center; gap: 12px;">
+                    <i class="fa-solid fa-bars"></i>
+                    <span style="font-size: 18px; user-select: none;">MENU</span>
+                </label>
+            </div>
+
+            <div class="brand-title">
+                <img th:src="@{/images/logo-horizontal.png}" width="230px">
+            </div>
+
+            <div class="perfil-container">
+                <input type="checkbox" id="gatilho-menu" style="display: none;">
+                <label for="gatilho-menu" class="perfil-funcionario">
+                    <p style="font-size: 18px;">Jessica Alves</p>
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                </label>
+                <div class="menu-dropdown">
+                    <a href="#"><i class="fa-regular fa-user"></i> Visualizar perfil</a>
+                    <label for="gatilho-modal-sair" class="opcao-sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</label>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="form-header">
+            <h1>Redefinir senha:</h1>
+            <p>Preencha os dados abaixo para criar uma nova senha:</p>
+        </div>
+
+        <form action="#" method="POST">
+            
+            <fieldset class="form-grid">
+                <div class="input-group full-width">
+                    <label for="nome">Senha atual:</label>
+                    <input type="password" id="senha-atual" name="senha-atual" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="cpf">Nova senha:</label>
+                    <input type="password" id="nova-senha" name="nova-senha" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="matricula">Confirmar nova senha:</label>
+                    <input type="password" id="confirmar-senha" name="confirmar-senha" required>
+                </div>
+            </fieldset>
+
+            <div class="btn-container">
+                <button type="submit" class="btn-submit">Salvar alterações</button>
+            </div>
+
+        </form>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Acervo - Biblioteca Cultura</title>
+    <link rel="stylesheet" th:href="@{/css/visualizar-acervo.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<!-- Modal sair -->
+<input type="checkbox" id="gatilho-modal-sair" style="display: none;">
+<label for="gatilho-modal-sair" class="modal-overlay"></label>
+<div class="modal-confirmacao">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <p>Deseja realmente sair?</p>
+    <div class="modal-botoes">
+        <a href="/logout" class="btn-confirmar">Sim, sair</a>
+        <label for="gatilho-modal-sair" class="btn-cancelar">Voltar</label>
+    </div>
+</div>
+
+<input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
+<label for="gatilho-menu-lateral" class="pelicula-escura"></label>
+
+<aside class="menu-esquerda">
+    <div class="menu-esquerda-topo">
+        <h2>MENU</h2>
+        <label for="gatilho-menu-lateral" class="botao-fechar-menu">
+            <i class="fa-solid fa-xmark"></i>
+        </label>
+    </div>
+    <nav class="links-menu-lateral">
+        <div class="grupo-menu-lateral">
+            <a href="/homescreen" class="subitem-menu"><i class="fa-solid fa-house"></i> Página inicial</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Fluxo diário</span>
+            <a href="/realizar-emprestimo" class="subitem-menu"><i class="fa-solid fa-book-open"></i> Realizar empréstimo</a>
+            <a href="#" class="subitem-menu"><i class="fa-solid fa-book-bookmark"></i> Registrar devolução</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Acervo</span>
+            <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
+            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo livro</a>
+            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo exemplar</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Usuários</span>
+            <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo cliente</a>
+        </div>
+        <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
+            <span class="categoria-titulo">Administração</span>
+            <a href="/consulta-funcionario" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar funcionários</a>
+            <a href="/cadastro-funcionario" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo funcionário</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Configurações</span>
+            <a href="/redefinir-senha" class="subitem-menu"><i class="fa-solid fa-gear"></i> Alterar minha senha</a>
+            <label for="gatilho-modal-sair" class="subitem-menu" style="cursor:pointer;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+            </label>
+        </div>
+    </nav>
+</aside>
+
+<header>
+    <div class="navbar">
+        <div class="nav-left">
+            <label for="gatilho-menu-lateral" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                <i class="fa-solid fa-bars"></i>
+                <span style="font-size:18px; user-select:none;">MENU</span>
+            </label>
+        </div>
+        <div class="brand-title">
+            <img th:src="@{/images/logo-horizontal.png}" width="230px" alt="Logo">
+        </div>
+        <div class="perfil-container">
+            <input type="checkbox" id="gatilho-menu" style="display: none;">
+            <label for="gatilho-menu" class="perfil-funcionario">
+                <p style="font-size:18px;" th:text="${sessao != null ? sessao.nome : 'Usuário'}">Usuário</p>
+                <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            </label>
+            <div class="menu-dropdown">
+                <a href="#"><i class="fa-regular fa-user"></i> Visualizar perfil</a>
+                <label for="gatilho-modal-sair" class="opcao-sair" style="cursor:pointer;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+                </label>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <h1>Visualizar acervo</h1>
+
+    <form method="get" action="/visualizar-acervo">
+        <div class="container-busca">
+            <div class="grupo-pesquisa">
+                <input type="text" name="termo" class="campo-pesquisa"
+                       th:value="${termo}" placeholder="Digite para pesquisar...">
+                <button type="submit" class="btn-pesquisa" aria-label="Buscar">
+                    <span class="material-icons lupa">search</span>
+                </button>
+            </div>
+            <div class="grupo-filtro">
+                <label class="legenda-filtro">Pesquisar por:</label>
+                <div class="seletor-estilizado">
+                    <select name="filtro" class="campo-selecao">
+                        <option value="titulo" th:selected="${filtro == 'titulo'}">Título</option>
+                        <option value="autor"  th:selected="${filtro == 'autor'}">Autor</option>
+                        <option value="genero" th:selected="${filtro == 'genero'}">Gênero</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Mensagem quando vazio -->
+    <p th:if="${livros == null or #lists.isEmpty(livros)}"
+       style="color:#94a3b8; margin-top:24px;">
+        Nenhum livro encontrado
+        <span th:if="${termo != null and !#strings.isEmpty(termo)}">
+                para "<span th:text="${termo}"></span>"
+            </span>.
+    </p>
+
+    <div class="container-tabela" th:unless="${livros == null or #lists.isEmpty(livros)}">
+        <table class="tabela-livros">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Ano</th>
+                <th>Gênero</th>
+                <th>N° Exemplar</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="livro : ${livros}">
+                <!-- Linha sem exemplar -->
+                <tr th:if="${#lists.isEmpty(livro.exemplares)}">
+                    <td th:text="${livro.id}"></td>
+                    <td class="titulo-livro" th:text="${livro.titulo}"></td>
+                    <td th:text="${livro.autor}"></td>
+                    <td th:text="${livro.anoPublicacao}"></td>
+                    <td th:text="${livro.categoria.nome}"></td>
+                    <td colspan="2" style="color:#94a3b8; font-style:italic;">Sem exemplares</td>
+                    <td>
+                        <div class="botoes-acao">
+                            <a th:href="@{/acervo/{id}/editar(id=${livro.id})}"
+                               class="icone-acao icone-editar" title="Editar"></a>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Uma linha por exemplar -->
+                <tr th:each="exemplar, stat : ${livro.exemplares}">
+                    <td th:text="${exemplar.id}"></td>
+                    <td class="titulo-livro" th:text="${livro.titulo}"></td>
+                    <td th:text="${livro.autor}"></td>
+                    <td th:text="${livro.anoPublicacao}"></td>
+                    <td th:text="${livro.categoria.nome}"></td>
+                    <td th:text="${stat.count}"></td>
+                    <td>
+                                <span th:text="${exemplar.status.name() == 'DISPONIVEL' ? 'Disponível' : 'Emprestado'}"
+                                      th:class="${exemplar.status.name() == 'DISPONIVEL'}
+                                                ? 'status-badge status-disponivel'
+                                                : 'status-badge status-emprestado'">
+                                </span>
+                    </td>
+                    <td>
+                        <div class="botoes-acao">
+                            <a th:href="@{/acervo/{id}/editar(id=${livro.id})}"
+                               class="icone-acao icone-editar" title="Editar livro"></a>
+                            <!-- Exclusão só aparece no primeiro exemplar para não repetir -->
+                            <form th:if="${stat.first}"
+                                  th:action="@{/acervo/{id}/deletar(id=${livro.id})}"
+                                  method="POST" style="display:inline;"
+                                  onsubmit="return confirm('Confirma a exclusão do livro e todos os seus exemplares?')">
+                                <button type="submit" class="icone-acao icone-excluir"
+                                        title="Excluir livro" style="border:none;background:none;cursor:pointer;"></button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+
+        <div class="rodape-tabela">
+            <div th:text="'Exibindo ' + ${#lists.size(livros)} + ' livro(s)'">Exibindo livros</div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

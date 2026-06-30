@@ -6,6 +6,10 @@ import java.time.LocalDateTime;
 /**
  * Membro da equipe / operador do sistema.
  * RF014, RF015, RNF008
+ *
+ * Cargos:
+ *  BIBLIOTECARIO      — acesso às operações do dia a dia (empréstimos, acervo, clientes)
+ *  BIBLIOTECARIO_ADM  — tudo acima + pode cadastrar/editar funcionários
  */
 @Entity
 @Table(name = "funcionarios")
@@ -24,7 +28,6 @@ public class Funcionario {
     @Column(nullable = false, unique = true, length = 30)
     private String matricula;
 
-    /** BIBLIOTECARIO | ADMINISTRADOR */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
     private Cargo cargo;
@@ -39,7 +42,21 @@ public class Funcionario {
     private LocalDateTime criadoEm = LocalDateTime.now();
 
     public enum Cargo {
-        BIBLIOTECARIO, ADMINISTRADOR
+        BIBLIOTECARIO,
+        BIBLIOTECARIO_ADM;
+
+        /** Rótulo amigável para exibição nas telas */
+        public String getLabel() {
+            return switch (this) {
+                case BIBLIOTECARIO     -> "Bibliotecário";
+                case BIBLIOTECARIO_ADM -> "Bibliotecário ADM";
+            };
+        }
+
+        /** Verifica se este cargo tem permissão de administração de funcionários */
+        public boolean isAdm() {
+            return this == BIBLIOTECARIO_ADM;
+        }
     }
 
     // ---- Getters e Setters ----
