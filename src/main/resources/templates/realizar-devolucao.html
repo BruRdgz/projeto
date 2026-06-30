@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Realizar Empréstimo - Biblioteca Cultura</title>
+    <title>Realizar Devolução - Biblioteca Cultura</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/realizar-emprestimo.css}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -94,7 +94,7 @@
 </header>
 
 <main class="main-container">
-    <h1 class="titulo-principal">Registrar Novo Empréstimo:</h1>
+    <h1 class="titulo-principal">Registrar Devolução</h1>
 
     <!-- Mensagens flash -->
     <div th:if="${sucesso}" style="color:#1e8449; background:#eafaf1; border:1px solid #58d68d; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
@@ -124,7 +124,6 @@
                     </div>
                 </div>
 
-                <a class="link-cadastro" href="#">Novo cliente? Cadastre-o primeiro.</a>
 
                 <!-- Card do cliente — preenchido via JS -->
                 <div class="card-cliente" id="card-cliente" style="display:none;">
@@ -149,11 +148,13 @@
                 <h2 class="secao-titulo">Escolher Livro</h2>
 
                 <div class="grupo-campo">
-                    <label class="rotulo-campo">ID DO EXEMPLAR:</label>
+                    <label class="rotulo-campo" for="livro-devolvido">LIVRO DEVOLVIDO:</label>
                     <div class="busca-container">
-                        <input type="text" id="exemplar-id-display" class="input-busca"
-                               placeholder="ID do exemplar...">
-                        <button type="button" class="button-busca" onclick="buscarExemplar()"></button>
+                        <select id="livro-devolvido" class="input-busca" name="livro-devolvido">
+                        <option value="livro1"></option>
+                        <option value="livro2"></option>
+                        <option value="livro3"></option>
+                        </select>
                     </div>
                 </div>
 
@@ -176,7 +177,7 @@
 
             <div class="container-acao">
                 <button type="submit" class="button-concluir" id="btn-concluir" disabled>
-                    EFETUAR EMPRÉSTIMO
+                    DEVOLVER LIVRO
                 </button>
             </div>
         </div>

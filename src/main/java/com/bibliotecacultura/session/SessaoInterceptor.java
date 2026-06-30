@@ -1,9 +1,10 @@
 package com.bibliotecacultura.session;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Intercepta todas as requisições:
@@ -36,9 +37,8 @@ public class SessaoInterceptor implements HandlerInterceptor {
             if (path.startsWith(pub)) return true;
         }
 
-        SessaoFuncionario sessao = (SessaoFuncionario)
-                req.getSession(false) == null ? null
-                : (SessaoFuncionario) req.getSession().getAttribute("sessao");
+        SessaoFuncionario sessao = req.getSession(false) == null ? null
+        : (SessaoFuncionario) req.getSession().getAttribute("sessao");
 
         // Sem sessão → redireciona para login
         if (sessao == null) {

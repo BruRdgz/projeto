@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar livro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!--icons importados do fontsawesome talvez não pegue ?-->
+    <link rel="stylesheet" th:href="@{/css/cadastro-funcionario.css}">
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <div class="nav-left">
+                <i class="fa-solid fa-bars"></i>
+                <span>MENU</span>
+            </div>
+            <div class="brand-title"><img th:src="@{/images/logo-horizontal.png}" width="200px"></div>
+            <div class="perfil-funcionario">
+                <p style="font-size: 17px;">Jessica Alves</p>
+                <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            </div>
+        </div>
+        <div class="faixa-adm">
+            <i class="fa-solid fa-shield-halved"></i> PAINEL ADM
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="form-header">
+            <h1>Cadastrar livro</h1>
+            <p>Preencha os dados abaixo para adicionar um novo livro ao acervo:</p>
+        </div>
+
+        <form action="#" method="POST">
+            
+            <fieldset class="form-grid">
+                <div class="input-group full-width">
+                    <label for="">Título:</label>
+                    <input type="text" id="" name="" required autocomplete>
+                </div>
+                
+                <div class="input-group">
+                    <label for="">Ano:</label>
+                    <input type="text" id="" name="" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="">Autor:</label>
+                    <input type="" id="" name="" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="data-nascimento">Gênero</label>
+                    <input type="" id="" name="" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="">Editora:</label>
+                    <input type="" id="" name="" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="isbn">ISBN:</label>
+                    <input type="" id="" name="" required>
+                </div>
+            </fieldset>
+
+            <div class="btn-container">
+                <button type="submit" class="btn-submit">Adicionar livro</button>
+            </div>
+
+        </form>
+    </main>
+
+</body>
+</html>

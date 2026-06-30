@@ -363,7 +363,7 @@ body {
     background-position: center;
 }
 
-.grade-botoes .botao-acao:nth-child(even) {
+.grade-botoes a:nth-child(even) .botao-acao {
     background-color: #cad6d8;
     background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.4)), url('../images/btn-background-verde.png');
     background-size: cover;

@@ -1,5 +1,15 @@
 package com.bibliotecacultura.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.bibliotecacultura.entity.Funcionario;
 import com.bibliotecacultura.entity.Livro;
 import com.bibliotecacultura.exception.NegocioException;
@@ -7,14 +17,8 @@ import com.bibliotecacultura.repository.LivroRepository;
 import com.bibliotecacultura.service.ClienteService;
 import com.bibliotecacultura.service.FuncionarioService;
 import com.bibliotecacultura.session.SessaoFuncionario;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ViewController {
@@ -36,9 +40,9 @@ public class ViewController {
     // ── POST /login ─────────────────────────────────────────────────────────────
     @PostMapping("/login")
     public String efetuarLogin(@RequestParam String matricula,
-                               @RequestParam String senha,
-                               HttpSession session,
-                               RedirectAttributes ra) {
+                                @RequestParam String senha,
+                                HttpSession session,
+                                RedirectAttributes ra) {
         try {
             SessaoFuncionario sessao = funcionarioService.autenticar(matricula, senha);
             session.setAttribute("sessao", sessao);
@@ -99,12 +103,30 @@ public class ViewController {
         return "realizar-emprestimo";
     }
 
+    // ── GET /realizar-devolucao ─────────────────────────────────────────────────
+    @GetMapping("/realizar-devolucao")
+    public String realizarDevolucao() {
+        return "realizar-devolucao";
+    }
+
     // ── GET /consulta-funcionario ────────────────────────────────────────────────
     @GetMapping("/consulta-funcionario")
     public String consultaFuncionario(@RequestParam(defaultValue = "") String q, Model model) {
         model.addAttribute("funcionarios", funcionarioService.listarTodos(q));
         model.addAttribute("q", q);
         return "consulta-funcionario";
+    }
+
+    // ── GET /cadastro-livro ────────────────────────────────────────────────
+    @GetMapping("/cadastro-livro")
+    public String cadastroLivro() {
+        return "cadastro-livro";
+    }
+
+    // ── GET /cadastro-exemplar ────────────────────────────────────────────────
+    @GetMapping("/cadastro-exemplar")
+    public String cadastroexemplar() {
+        return "cadastro-exemplar";
     }
 
     // ── GET /cadastro-funcionario ────────────────────────────────────────────────
