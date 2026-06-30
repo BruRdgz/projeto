@@ -43,7 +43,7 @@ public class FuncionarioController {
         return "consulta-funcionario";
     }
 
-    // ── POST /funcionarios — salva novo funcionário ───────────────────────────
+    // ── POST /funcionarios — salva funcionário ────────────────────────────────
     @PostMapping
     public String salvar(@Valid @ModelAttribute("funcionario") FuncionarioDTO dto,
                          BindingResult result,
@@ -65,7 +65,7 @@ public class FuncionarioController {
             funcionarioService.cadastrar(dto);
             ra.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
         } catch (Exception e) {
-            ra.addFlashAttribute("erro", e.getMessage());
+            ra.addFlashAttribute("erro", "Não foi possível concluir a operação.");
             return "redirect:/cadastro-funcionario";
         }
 
@@ -105,7 +105,27 @@ public class FuncionarioController {
             funcionarioService.alterar(id, dto);
             ra.addFlashAttribute("sucesso", "Funcionário atualizado com sucesso!");
         } catch (Exception e) {
-            ra.addFlashAttribute("erro", e.getMessage());
+            ra.addFlashAttribute("erro", "Não foi possível concluir a operação.");
+        }
+
+        return "redirect:/consulta-funcionario";
+    }
+
+    // ── POST /funcionarios/{id}/deletar — exclui funcionário ─────────────────
+    @PostMapping("/{id}/deletar")
+    public String deletar(@PathVariable Long id,
+                          HttpSession session,
+                          RedirectAttributes ra) {
+        if (naoEAdm(session)) {
+            ra.addFlashAttribute("erro", "Não foi possível concluir a operação.");
+            return "redirect:/homescreen";
+        }
+
+        try {
+            funcionarioService.deletar(id);
+            ra.addFlashAttribute("sucesso", "Funcionário excluído com sucesso!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("erro", "Não foi possível concluir a operação.");
         }
 
         return "redirect:/consulta-funcionario";

@@ -45,4 +45,6 @@ public interface EmprestimoRepository extends JpaRepository<Emprestimo, Long> {
 
     // RF013 pré-condição: cliente só pode ser inativado se não tiver empréstimos ativos
     boolean existsByClienteIdAndDataDevolucaoRealIsNull(Long clienteId);
+
+    boolean existsByFuncionarioId(Long funcionarioId);
 }

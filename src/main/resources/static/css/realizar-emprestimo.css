@@ -260,7 +260,7 @@ body {
         }
 
         .titulo-principal {
-            font-family: 'Playfair Display', serif;
+            font-family: 'SF Pro Rounded', sans-serif;
             font-size: 32px;
             font-weight: 400;
             margin-bottom: 70px;
@@ -281,7 +281,7 @@ body {
         }
 
         .secao-titulo {
-            font-family: 'Playfair Display', serif;
+            font-family: 'SF Pro Rounded', sans-serif;
             font-size: 28px;
             font-weight: 600;
             margin-bottom: 30px;

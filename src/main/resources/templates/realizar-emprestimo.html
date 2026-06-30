@@ -43,12 +43,12 @@
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Acervo</span>
             <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
+            <a href="/cadastro-livro" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
+            <a href="/cadastro-exemplar" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
         </div>
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Usuários</span>
-            <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+            <a href="/perfil-cliente" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
             <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar cliente</a>
         </div>
         <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
@@ -94,7 +94,7 @@
 </header>
 
 <main class="main-container">
-    <h1 class="titulo-principal">Registrar Novo Empréstimo:</h1>
+    <h1 class="titulo-principal">Registrar empréstimo:</h1>
 
     <!-- Mensagens flash -->
     <div th:if="${sucesso}" style="color:#1e8449; background:#eafaf1; border:1px solid #58d68d; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
@@ -123,8 +123,6 @@
                         <button type="button" class="button-busca" onclick="buscarCliente()"></button>
                     </div>
                 </div>
-
-                <a class="link-cadastro" href="#">Novo cliente? Cadastre-o primeiro.</a>
 
                 <!-- Card do cliente — preenchido via JS -->
                 <div class="card-cliente" id="card-cliente" style="display:none;">
@@ -200,15 +198,18 @@
                         c.statusSituacional === 'COM_MULTA' ? 'Com multa' : 'Bloqueado');
                 document.getElementById('cliente-total-multa').textContent =
                     'R$' + (c.saldoMulta || 0).toFixed(2).replace('.', ',');
+                document.getElementById('cliente-rodape').textContent = c.livrosAtivos && c.livrosAtivos.length
+                    ? 'Está com livros: ' + c.livrosAtivos.join(', ')
+                    : 'Não está com livros.';
                 document.getElementById('card-cliente').style.display = '';
                 document.getElementById('cliente-erro').style.display = 'none';
                 document.getElementById('campo-cpf').value = cpf;
-                clienteValido = c.statusSituacional !== 'BLOQUEADO';
+                clienteValido = c.statusSituacional === 'SEM_MULTA';
                 atualizarBotao();
             })
             .catch(() => {
                 document.getElementById('card-cliente').style.display = 'none';
-                document.getElementById('cliente-erro').textContent = 'Cliente não encontrado.';
+                document.getElementById('cliente-erro').textContent = 'Não foi possível concluir a operação.';
                 document.getElementById('cliente-erro').style.display = '';
                 clienteValido = false;
                 atualizarBotao();
@@ -223,7 +224,7 @@
             .then(r => r.ok ? r.json() : Promise.reject(r))
             .then(e => {
                 document.getElementById('livro-titulo').textContent = e.livroTitulo;
-                document.getElementById('livro-autor').textContent = e.livroAutor;
+                document.getElementById('livro-autor').textContent = e.codigo + ' - ' + e.livroAutor;
                 document.getElementById('resultado-livro').style.display = '';
                 livroIdSelecionado = e.livroId;
             })
@@ -239,8 +240,9 @@
         document.getElementById('campo-livro-id').value = livroIdSelecionado;
 
         const titulo = document.getElementById('livro-titulo').textContent;
+        const detalhe = document.getElementById('livro-autor').textContent;
         document.getElementById('livros-adicionados').innerHTML =
-            '<div class="badge-livro">' + titulo + '</div>';
+            '<div class="badge-livro">' + detalhe + ' - ' + titulo + '</div>';
 
         document.getElementById('resultado-livro').style.display = 'none';
         atualizarBotao();

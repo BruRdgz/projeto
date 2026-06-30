@@ -1,77 +1,154 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar livro</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!--icons importados do fontsawesome talvez não pegue ?-->
+    <title th:text="${livro != null and livro.id != null ? 'Editar Livro' : 'Cadastrar Livro'} + ' - Biblioteca Cultura'">
+        Cadastrar Livro - Biblioteca Cultura
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/cadastro-funcionario.css}">
 </head>
 <body>
+<input type="checkbox" id="gatilho-modal-sair" style="display: none;">
+<label for="gatilho-modal-sair" class="modal-overlay"></label>
+<div class="modal-confirmacao">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <p>Deseja realmente sair?</p>
+    <div class="modal-botoes">
+        <a href="/logout" class="btn-confirmar">Sim, sair</a>
+        <label for="gatilho-modal-sair" class="btn-cancelar">Voltar</label>
+    </div>
+</div>
 
-    <header>
-        <div class="navbar">
-            <div class="nav-left">
+<input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
+<label for="gatilho-menu-lateral" class="pelicula-escura"></label>
+
+<aside class="menu-esquerda">
+    <div class="menu-esquerda-topo">
+        <h2>MENU</h2>
+        <label for="gatilho-menu-lateral" class="botao-fechar-menu"><i class="fa-solid fa-xmark"></i></label>
+    </div>
+    <nav class="links-menu-lateral">
+        <div class="grupo-menu-lateral">
+            <a href="/homescreen" class="subitem-menu"><i class="fa-solid fa-house"></i> Página inicial</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Fluxo diário</span>
+            <a href="/realizar-emprestimo" class="subitem-menu"><i class="fa-solid fa-book-open"></i> Realizar empréstimo</a>
+            <a href="/realizar-devolucao" class="subitem-menu"><i class="fa-solid fa-book-bookmark"></i> Registrar devolução</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Acervo</span>
+            <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
+            <a href="/cadastro-livro" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
+            <a href="/cadastro-exemplar" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Usuários</span>
+            <a href="/perfil-cliente" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar cliente</a>
+        </div>
+        <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
+            <span class="categoria-titulo">Administração</span>
+            <a href="/consulta-funcionario" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar funcionários</a>
+            <a href="/cadastro-funcionario" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar funcionário</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Configurações</span>
+            <a href="/redefinir-senha" class="subitem-menu"><i class="fa-solid fa-gear"></i> Alterar minha senha</a>
+            <label for="gatilho-modal-sair" class="subitem-menu" style="cursor:pointer;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+            </label>
+        </div>
+    </nav>
+</aside>
+
+<header>
+    <div class="navbar">
+        <div class="nav-left">
+            <label for="gatilho-menu-lateral" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
                 <i class="fa-solid fa-bars"></i>
-                <span>MENU</span>
-            </div>
-            <div class="brand-title"><img th:src="@{/images/logo-horizontal.png}" width="200px"></div>
-            <div class="perfil-funcionario">
-                <p style="font-size: 17px;">Jessica Alves</p>
+                <span style="font-size:18px; user-select:none;">MENU</span>
+            </label>
+        </div>
+        <div class="brand-title">
+            <img th:src="@{/images/logo-horizontal.png}" width="230px" alt="Logo">
+        </div>
+        <div class="perfil-container">
+            <input type="checkbox" id="gatilho-menu" style="display: none;">
+            <label for="gatilho-menu" class="perfil-funcionario">
+                <p style="font-size:18px;" th:text="${sessao != null ? sessao.nome : 'Usuário'}">Usuário</p>
                 <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            </label>
+            <div class="menu-dropdown">
+                <a href="#"><i class="fa-regular fa-user"></i> Visualizar perfil</a>
+                <label for="gatilho-modal-sair" class="opcao-sair" style="cursor:pointer;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+                </label>
             </div>
         </div>
-        <div class="faixa-adm">
-            <i class="fa-solid fa-shield-halved"></i> PAINEL ADM
-        </div>
-    </header>
+    </div>
+</header>
 
-    <main class="container">
-        <div class="form-header">
-            <h1>Cadastrar livro</h1>
-            <p>Preencha os dados abaixo para adicionar um novo livro ao acervo:</p>
-        </div>
+<main class="container">
+    <div class="form-header">
+        <h1 th:text="${livro != null and livro.id != null ? 'Editar livro' : 'Cadastrar livro'}">Cadastrar livro</h1>
+        <p th:text="${livro != null and livro.id != null
+                      ? 'Modifique os dados abaixo para atualizar o livro:'
+                      : 'Preencha os dados abaixo para adicionar um livro ao acervo:'}">
+            Preencha os dados abaixo para adicionar um livro ao acervo:
+        </p>
+    </div>
 
-        <form action="#" method="POST">
-            
-            <fieldset class="form-grid">
-                <div class="input-group full-width">
-                    <label for="">Título:</label>
-                    <input type="text" id="" name="" required autocomplete>
-                </div>
-                
-                <div class="input-group">
-                    <label for="">Ano:</label>
-                    <input type="text" id="" name="" required>
-                </div>
+    <div th:if="${sucesso}" style="color:#1e8449; background:#eafaf1; border:1px solid #58d68d; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
+        <i class="fa-solid fa-circle-check"></i> <span th:text="${sucesso}"></span>
+    </div>
+    <div th:if="${erro}" style="color:#c0392b; background:#fde8e8; border:1px solid #e57373; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
+        <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${erro}"></span>
+    </div>
 
-                <div class="input-group">
-                    <label for="">Autor:</label>
-                    <input type="" id="" name="" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="data-nascimento">Gênero</label>
-                    <input type="" id="" name="" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="">Editora:</label>
-                    <input type="" id="" name="" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="isbn">ISBN:</label>
-                    <input type="" id="" name="" required>
-                </div>
-            </fieldset>
-
-            <div class="btn-container">
-                <button type="submit" class="btn-submit">Adicionar livro</button>
+    <form th:action="${livro != null and livro.id != null ? '/acervo/' + livro.id : '/cadastro-livro'}" method="POST">
+        <fieldset class="form-grid">
+            <div class="input-group full-width">
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" name="titulo" th:value="${livro?.titulo}" required>
             </div>
 
-        </form>
-    </main>
+            <div class="input-group">
+                <label for="anoPublicacao">Ano:</label>
+                <input type="number" id="anoPublicacao" name="anoPublicacao" th:value="${livro?.anoPublicacao}" required min="1000" max="9999">
+            </div>
 
+            <div class="input-group">
+                <label for="autor">Autor:</label>
+                <input type="text" id="autor" name="autor" th:value="${livro?.autor}" required>
+            </div>
+
+            <div class="input-group">
+                <label for="categoriaId">Gênero:</label>
+                <select id="categoriaId" name="categoriaId" required>
+                    <option value="" disabled th:selected="${livro == null or livro.categoriaId == null}">Selecione o gênero...</option>
+                    <option th:each="categoria : ${categorias}"
+                            th:value="${categoria.id}"
+                            th:text="${categoria.nome}"
+                            th:selected="${livro != null and livro.categoriaId == categoria.id}">
+                    </option>
+                </select>
+            </div>
+        </fieldset>
+
+        <div class="btn-container" style="display:flex; gap:15px; justify-content:flex-end; margin-top:24px;">
+            <a href="/visualizar-acervo" class="btn-submit"
+               style="background-color:#64748b; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center;">
+                Cancelar
+            </a>
+            <button type="submit" class="btn-submit"
+                    th:text="${livro != null and livro.id != null ? 'Salvar Alterações' : 'Adicionar livro'}">
+                Adicionar livro
+            </button>
+        </div>
+    </form>
+</main>
 </body>
 </html>

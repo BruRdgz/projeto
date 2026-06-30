@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NegocioException.class)
     public String handleNegocio(NegocioException ex, Model model) {
-        model.addAttribute("erro", ex.getMessage());
+        model.addAttribute("erro", "Não foi possível concluir a operação.");
         return "error/negocio";
     }
 }

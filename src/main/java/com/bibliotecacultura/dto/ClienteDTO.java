@@ -2,6 +2,7 @@ package com.bibliotecacultura.dto;
 
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ClienteDTO {
 
@@ -27,6 +28,7 @@ public class ClienteDTO {
     // campos somente leitura — nunca enviados pelo formulário
     private String statusSituacional;
     private BigDecimal saldoMulta;
+    private List<String> livrosAtivos;
 
     // ---- Getters e Setters ----
 
@@ -50,4 +52,7 @@ public class ClienteDTO {
 
     public BigDecimal getSaldoMulta() { return saldoMulta; }
     public void setSaldoMulta(BigDecimal saldoMulta) { this.saldoMulta = saldoMulta; }
+
+    public List<String> getLivrosAtivos() { return livrosAtivos; }
+    public void setLivrosAtivos(List<String> livrosAtivos) { this.livrosAtivos = livrosAtivos; }
 }

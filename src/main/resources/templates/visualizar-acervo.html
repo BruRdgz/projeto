@@ -43,12 +43,12 @@
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Acervo</span>
             <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
+            <a href="/cadastro-livro" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
+            <a href="/cadastro-exemplar" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
         </div>
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Usuários</span>
-            <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+            <a href="/perfil-cliente" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
             <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar cliente</a>
         </div>
         <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
@@ -95,6 +95,13 @@
 
 <main class="container">
     <h1>Visualizar acervo</h1>
+
+    <div th:if="${sucesso}" style="color:#1e8449; background:#eafaf1; border:1px solid #58d68d; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
+        <i class="fa-solid fa-circle-check"></i> <span th:text="${sucesso}"></span>
+    </div>
+    <div th:if="${erro}" style="color:#c0392b; background:#fde8e8; border:1px solid #e57373; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
+        <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${erro}"></span>
+    </div>
 
     <form method="get" action="/visualizar-acervo">
         <div class="container-busca">
@@ -145,7 +152,7 @@
             <th:block th:each="livro : ${livros}">
                 <!-- Linha sem exemplar -->
                 <tr th:if="${#lists.isEmpty(livro.exemplares)}">
-                    <td th:text="${livro.id}"></td>
+                    <td th:text="'LIV-' + ${livro.id}"></td>
                     <td class="titulo-livro" th:text="${livro.titulo}"></td>
                     <td th:text="${livro.autor}"></td>
                     <td th:text="${livro.anoPublicacao}"></td>
@@ -160,7 +167,7 @@
                 </tr>
                 <!-- Uma linha por exemplar -->
                 <tr th:each="exemplar, stat : ${livro.exemplares}">
-                    <td th:text="${exemplar.id}"></td>
+                    <td th:text="'EX-' + ${exemplar.id}"></td>
                     <td class="titulo-livro" th:text="${livro.titulo}"></td>
                     <td th:text="${livro.autor}"></td>
                     <td th:text="${livro.anoPublicacao}"></td>

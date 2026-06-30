@@ -1,129 +1,142 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de exemplar</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> <!--icons importados do fontsawesome talvez não pegue ?-->
-    <link rel="stylesheet" th:href="@{/css/redefinir-senha.css}">
+    <title>Cadastro de Exemplar - Biblioteca Cultura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/cadastro-funcionario.css}">
 </head>
 <body>
-    <input type="checkbox" id="gatilho-modal-sair" style="display: none;">
-    <label for="gatilho-modal-sair" class="modal-overlay"></label>
-    <div class="modal-confirmacao">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        <p>Deseja realmente sair?</p>
-        <div class="modal-botoes">
-            <a href="/login" class="btn-confirmar">Sim, sair</a>
-            <label for="gatilho-modal-sair" class="btn-cancelar">Voltar</label>
-        </div>
+<input type="checkbox" id="gatilho-modal-sair" style="display: none;">
+<label for="gatilho-modal-sair" class="modal-overlay"></label>
+<div class="modal-confirmacao">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <p>Deseja realmente sair?</p>
+    <div class="modal-botoes">
+        <a href="/logout" class="btn-confirmar">Sim, sair</a>
+        <label for="gatilho-modal-sair" class="btn-cancelar">Voltar</label>
     </div>
-        <input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
+</div>
 
-    <label for="gatilho-menu-lateral" class="pelicula-escura"></label>
+<input type="checkbox" id="gatilho-menu-lateral" style="display: none;">
+<label for="gatilho-menu-lateral" class="pelicula-escura"></label>
 
-    <aside class="menu-esquerda">
-        <div class="menu-esquerda-topo">
-            <h2>MENU</h2>
-            <label for="gatilho-menu-lateral" class="botao-fechar-menu"><i class="fa-solid fa-xmark"></i></label>
-        </div>
-
+<aside class="menu-esquerda">
+    <div class="menu-esquerda-topo">
+        <h2>MENU</h2>
+        <label for="gatilho-menu-lateral" class="botao-fechar-menu"><i class="fa-solid fa-xmark"></i></label>
+    </div>
     <nav class="links-menu-lateral">
-    <div class="grupo-menu-lateral">
-        <a href="/homescreen" class="subitem-menu"><i class="fa-solid fa-house"></i>Página inicial</a>
-    </div>
-
-    <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Fluxo diário</span>
-        <a href="/realizar-emprestimo" class="subitem-menu"><i class="fa-solid fa-book-open"></i> Realizar empréstimo </a>
-        <a href="/realizar-devolucao" class="subitem-menu"><i class="fa-solid fa-book-bookmark"></i> Registrar devolução </a>
-    </div>
-    <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Acervo</span>
-        <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
-        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro </a>
-        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar </a>
-    </div>
-
-    <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Usuários</span>
-        <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
-        <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar cliente</a>
-    </div>
-
-    <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Administração</span>
-        <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar funcionários</a>
-        <a href="/cadastro-funcionario" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar novo funcionário</a>
-    </div>
-
         <div class="grupo-menu-lateral">
-        <span class="categoria-titulo">Configurações</span>
-        <a href="/redefinir-senha" class="subitem-menu"><i class="fa-solid fa-gear"></i> Alterar minha senha</a>
-        <label for="gatilho-modal-sair" class="subitem-menu"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair </label>
+            <a href="/homescreen" class="subitem-menu"><i class="fa-solid fa-house"></i> Página inicial</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Fluxo diário</span>
+            <a href="/realizar-emprestimo" class="subitem-menu"><i class="fa-solid fa-book-open"></i> Realizar empréstimo</a>
+            <a href="/realizar-devolucao" class="subitem-menu"><i class="fa-solid fa-book-bookmark"></i> Registrar devolução</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Acervo</span>
+            <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
+            <a href="/cadastro-livro" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
+            <a href="/cadastro-exemplar" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Usuários</span>
+            <a href="/perfil-cliente" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar cliente</a>
+        </div>
+        <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
+            <span class="categoria-titulo">Administração</span>
+            <a href="/consulta-funcionario" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar funcionários</a>
+            <a href="/cadastro-funcionario" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar funcionário</a>
+        </div>
+        <div class="grupo-menu-lateral">
+            <span class="categoria-titulo">Configurações</span>
+            <a href="/redefinir-senha" class="subitem-menu"><i class="fa-solid fa-gear"></i> Alterar minha senha</a>
+            <label for="gatilho-modal-sair" class="subitem-menu" style="cursor:pointer;">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+            </label>
+        </div>
+    </nav>
+</aside>
+
+<header>
+    <div class="navbar">
+        <div class="nav-left">
+            <label for="gatilho-menu-lateral" style="cursor:pointer; display:flex; align-items:center; gap:12px;">
+                <i class="fa-solid fa-bars"></i>
+                <span style="font-size:18px; user-select:none;">MENU</span>
+            </label>
+        </div>
+        <div class="brand-title">
+            <img th:src="@{/images/logo-horizontal.png}" width="230px" alt="Logo">
+        </div>
+        <div class="perfil-container">
+            <input type="checkbox" id="gatilho-menu" style="display: none;">
+            <label for="gatilho-menu" class="perfil-funcionario">
+                <p style="font-size:18px;" th:text="${sessao != null ? sessao.nome : 'Usuário'}">Usuário</p>
+                <div class="avatar"><i class="fa-solid fa-user"></i></div>
+            </label>
+            <div class="menu-dropdown">
+                <a href="#"><i class="fa-regular fa-user"></i> Visualizar perfil</a>
+                <label for="gatilho-modal-sair" class="opcao-sair" style="cursor:pointer;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+                </label>
+            </div>
+        </div>
     </div>
-</nav>
-    </aside>
+</header>
 
-    <header>
-        <div class="navbar">
-            <div class="nav-left">
-                <label for="gatilho-menu-lateral" class="nav-left" style="cursor: pointer; display: flex; align-items: center; gap: 12px;">
-                    <i class="fa-solid fa-bars"></i>
-                    <span style="font-size: 18px; user-select: none;">MENU</span>
-                </label>
-            </div>
+<main class="container">
+    <div class="form-header">
+        <h1>Cadastrar exemplar</h1>
+        <p>Busque o livro antes de adicionar um exemplar ao acervo:</p>
+    </div>
 
-            <div class="brand-title">
-                <img th:src="@{/images/logo-horizontal.png}" width="230px">
-            </div>
+    <div th:if="${sucesso}" style="color:#1e8449; background:#eafaf1; border:1px solid #58d68d; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
+        <i class="fa-solid fa-circle-check"></i> <span th:text="${sucesso}"></span>
+    </div>
+    <div th:if="${erro}" style="color:#c0392b; background:#fde8e8; border:1px solid #e57373; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
+        <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${erro}"></span>
+    </div>
 
-            <div class="perfil-container">
-                <input type="checkbox" id="gatilho-menu" style="display: none;">
-                <label for="gatilho-menu" class="perfil-funcionario">
-                    <p style="font-size:18px;" th:text="${sessao != null ? sessao.nome : 'Usuário'}">Usuário</p>                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
-                </label>
-                <div class="menu-dropdown">
-                    <a href="#"><i class="fa-regular fa-user"></i> Visualizar perfil</a>
-                    <label for="gatilho-modal-sair" class="opcao-sair"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</label>
-                </div>
+    <form method="GET" action="/cadastro-exemplar" style="display:flex; gap:8px; margin-bottom:24px;">
+        <input type="text" name="termo" th:value="${termo}" placeholder="Buscar por título, autor ou gênero..."
+               style="flex:1; padding:10px 14px; border:1px solid #cbd5e1; border-radius:6px; font-size:16px;">
+        <button type="submit" class="btn-submit" style="max-width:150px;">Buscar</button>
+    </form>
+
+    <form method="POST" action="/cadastro-exemplar">
+        <fieldset class="form-grid">
+            <div class="input-group full-width">
+                <label for="livroId">Livro:</label>
+                <select id="livroId" name="livroId" required th:disabled="${livros == null or #lists.isEmpty(livros)}">
+                    <option value="" disabled selected>Selecione um livro encontrado...</option>
+                    <option th:each="livro : ${livros}"
+                            th:value="${livro.id}"
+                            th:text="'LIV-' + ${livro.id} + ' - ' + ${livro.titulo} + ' - ' + ${livro.autor}">
+                    </option>
+                </select>
             </div>
+        </fieldset>
+
+        <p th:if="${termo != null and !#strings.isEmpty(termo) and (livros == null or #lists.isEmpty(livros))}"
+           style="color:#94a3b8; margin-top:8px;">
+            Nenhum livro encontrado.
+        </p>
+
+        <div class="btn-container" style="display:flex; gap:15px; justify-content:flex-end; margin-top:24px;">
+            <a href="/visualizar-acervo" class="btn-submit"
+               style="background-color:#64748b; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center;">
+                Cancelar
+            </a>
+            <button type="submit" class="btn-submit" th:disabled="${livros == null or #lists.isEmpty(livros)}">
+                Adicionar exemplar
+            </button>
         </div>
-    </header>
-
-    <main class="container">
-        <div class="form-header">
-            <h1>Cadastrar exemplar:</h1>
-            <p>Preencha os dados abaixo para salvar um novo exemplar:</p>
-        </div>
-
-        <form action="#" method="POST">
-                <div class="input-group">
-                    <label for="">Exemplar</label>
-                    <select id="" name="" required>
-                        <option value=""></option>
-                    </select>
-                </div>
-
-            <fieldset class="form-grid">
-                <div class="input-group full-width">
-                    <label for="">ID</label>
-                    <input type="text" id="" name="" required>
-                </div>
-
-                <div class="input-group">
-                    <label for="">Confirmar ID</label>
-                    <input type="text" id="" name="" required>
-                </div>
-
-            </fieldset>
-
-            <div class="btn-container">
-                <button type="submit" class="btn-submit">Adicionar exemplar</button>
-            </div>
-
-        </form>
-    </main>
-
+    </form>
+</main>
 </body>
 </html>

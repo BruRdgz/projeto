@@ -13,7 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.bibliotecacultura.entity.Funcionario;
 import com.bibliotecacultura.entity.Livro;
 import com.bibliotecacultura.exception.NegocioException;
+import com.bibliotecacultura.dto.LivroDTO;
 import com.bibliotecacultura.repository.LivroRepository;
+import com.bibliotecacultura.service.AcervoService;
 import com.bibliotecacultura.service.ClienteService;
 import com.bibliotecacultura.service.FuncionarioService;
 import com.bibliotecacultura.session.SessaoFuncionario;
@@ -25,6 +27,7 @@ public class ViewController {
 
     @Autowired private FuncionarioService funcionarioService;
     @Autowired private ClienteService clienteService;
+    @Autowired private AcervoService acervoService;
     @Autowired private com.bibliotecacultura.service.CirculacaoService circulacaoService;
     @Autowired private LivroRepository livroRepository;
 
@@ -119,14 +122,57 @@ public class ViewController {
 
     // ── GET /cadastro-livro ────────────────────────────────────────────────
     @GetMapping("/cadastro-livro")
-    public String cadastroLivro() {
+    public String cadastroLivro(Model model) {
+        model.addAttribute("livro", new LivroDTO());
+        model.addAttribute("categorias", acervoService.listarCategorias());
         return "cadastro-livro";
+    }
+
+    // ── POST /cadastro-livro ───────────────────────────────────────────────
+    @PostMapping("/cadastro-livro")
+    public String salvarLivro(@RequestParam String titulo,
+                              @RequestParam Integer anoPublicacao,
+                              @RequestParam String autor,
+                              @RequestParam Long categoriaId,
+                              RedirectAttributes ra) {
+        try {
+            LivroDTO dto = new LivroDTO();
+            dto.setTitulo(titulo);
+            dto.setAnoPublicacao(anoPublicacao);
+            dto.setAutor(autor);
+            dto.setCategoriaId(categoriaId);
+            acervoService.cadastrar(dto);
+            ra.addFlashAttribute("sucesso", "Livro cadastrado com sucesso!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("erro", "Não foi possível concluir a operação.");
+            return "redirect:/cadastro-livro";
+        }
+
+        return "redirect:/visualizar-acervo";
     }
 
     // ── GET /cadastro-exemplar ────────────────────────────────────────────────
     @GetMapping("/cadastro-exemplar")
-    public String cadastroexemplar() {
+    public String cadastroExemplar(@RequestParam(defaultValue = "") String termo, Model model) {
+        if (!termo.isBlank()) {
+            model.addAttribute("livros", livroRepository.search(termo));
+        }
+        model.addAttribute("termo", termo);
         return "cadastro-exemplar";
+    }
+
+    // ── POST /cadastro-exemplar ───────────────────────────────────────────────
+    @PostMapping("/cadastro-exemplar")
+    public String salvarExemplar(@RequestParam Long livroId, RedirectAttributes ra) {
+        try {
+            acervoService.cadastrarExemplar(livroId);
+            ra.addFlashAttribute("sucesso", "Exemplar cadastrado com sucesso!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("erro", "Não foi possível concluir a operação.");
+            return "redirect:/cadastro-exemplar";
+        }
+
+        return "redirect:/visualizar-acervo";
     }
 
     // ── GET /cadastro-funcionario ────────────────────────────────────────────────
@@ -160,7 +206,7 @@ public class ViewController {
             funcionarioService.cadastrar(dto);
             ra.addFlashAttribute("sucesso", "Funcionário cadastrado com sucesso!");
         } catch (Exception e) {
-            ra.addFlashAttribute("erro", e.getMessage());
+            ra.addFlashAttribute("erro", "Não foi possível concluir a operação.");
         }
         return "redirect:/consulta-funcionario";
     }
@@ -192,7 +238,7 @@ public class ViewController {
                 model.addAttribute("historico", historico);
                 model.addAttribute("cpf", cpf);
             } catch (Exception e) {
-                model.addAttribute("erro", "Cliente com CPF " + cpf + " não encontrado.");
+                model.addAttribute("erro", "Não foi possível concluir a operação.");
             }
         }
         return "perfil-cliente";

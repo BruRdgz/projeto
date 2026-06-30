@@ -49,7 +49,13 @@ public class ClienteService {
 
     public ClienteDTO buscarPorCpf(String cpf) {
         return clienteRepo.findByCpfAndAtivoTrue(cpf)
-                .map(this::toDTO)
+                .map(cliente -> {
+                    ClienteDTO dto = toDTO(cliente);
+                    dto.setLivrosAtivos(emprestimoRepo.findActivosByClienteId(cliente.getId()).stream()
+                            .map(e -> e.getExemplar().getLivro().getTitulo())
+                            .toList());
+                    return dto;
+                })
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Nenhum cliente com CPF " + cpf + " encontrado."));
     }
 
@@ -58,6 +64,9 @@ public class ClienteService {
     /** RF010 — register a new client. */
     @Transactional
     public ClienteDTO cadastrar(ClienteDTO dto) {
+        if (!cpfValido(dto.getCpf())) {
+            throw new NegocioException("CPF inválido.");
+        }
         if (clienteRepo.existsByCpf(dto.getCpf())) {
             throw new DuplicadoException("CPF " + dto.getCpf() + " já cadastrado.");
         }
@@ -70,6 +79,30 @@ public class ClienteService {
         // status_situacional = SEM_MULTA and saldo_multa = 0 are set by entity defaults
 
         return toDTO(clienteRepo.save(cliente));
+    }
+
+    private boolean cpfValido(String cpf) {
+        if (cpf == null) return false;
+
+        String digitos = cpf.replaceAll("\\D", "");
+        if (digitos.length() != 11 || digitos.chars().distinct().count() == 1) {
+            return false;
+        }
+
+        int primeiroDigito = calcularDigitoCpf(digitos, 9);
+        int segundoDigito = calcularDigitoCpf(digitos, 10);
+
+        return primeiroDigito == Character.getNumericValue(digitos.charAt(9))
+                && segundoDigito == Character.getNumericValue(digitos.charAt(10));
+    }
+
+    private int calcularDigitoCpf(String digitos, int tamanho) {
+        int soma = 0;
+        for (int i = 0; i < tamanho; i++) {
+            soma += Character.getNumericValue(digitos.charAt(i)) * (tamanho + 1 - i);
+        }
+        int resto = soma % 11;
+        return resto < 2 ? 0 : 11 - resto;
     }
 
     /** RF012 — update name, email, or phone. CPF is immutable. */

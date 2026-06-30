@@ -44,12 +44,12 @@
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Acervo</span>
             <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
+            <a href="/cadastro-livro" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
+            <a href="/cadastro-exemplar" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
         </div>
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Usuários</span>
-            <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+            <a href="/perfil-cliente" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
             <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar cliente</a>
         </div>
         <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
@@ -101,8 +101,8 @@
         </h1>
         <p th:text="${funcionario != null and funcionario.id != null
                           ? 'Modifique os dados abaixo para atualizar o funcionário:'
-                          : 'Preencha os dados abaixo para registrar um novo funcionário:'}">
-            Preencha os dados abaixo para registrar um novo funcionário:
+                          : 'Preencha os dados abaixo para cadastrar o funcionário:'}">
+            Preencha os dados abaixo para cadastrar o funcionário:
         </p>
     </div>
 

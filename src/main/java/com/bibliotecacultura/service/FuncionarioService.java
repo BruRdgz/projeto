@@ -5,6 +5,7 @@ import com.bibliotecacultura.entity.Funcionario;
 import com.bibliotecacultura.exception.DuplicadoException;
 import com.bibliotecacultura.exception.EntidadeNaoEncontradaException;
 import com.bibliotecacultura.exception.NegocioException;
+import com.bibliotecacultura.repository.EmprestimoRepository;
 import com.bibliotecacultura.repository.FuncionarioRepository;
 import com.bibliotecacultura.session.SessaoFuncionario;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,12 @@ import java.util.List;
 public class FuncionarioService {
 
     private final FuncionarioRepository funcionarioRepo;
+    private final EmprestimoRepository emprestimoRepo;
 
-    public FuncionarioService(FuncionarioRepository funcionarioRepo) {
+    public FuncionarioService(FuncionarioRepository funcionarioRepo,
+                              EmprestimoRepository emprestimoRepo) {
         this.funcionarioRepo = funcionarioRepo;
+        this.emprestimoRepo = emprestimoRepo;
     }
 
     // ------------------------------------------------------------------ LEITURA
@@ -57,9 +61,12 @@ public class FuncionarioService {
 
     // ----------------------------------------------------------------- ESCRITA
 
-    /** RF014 — cadastrar novo funcionário. Somente BIBLIOTECARIO_ADM pode chamar este método. */
+    /** RF014 — cadastrar funcionário. Somente BIBLIOTECARIO_ADM pode chamar este método. */
     @Transactional
     public FuncionarioDTO cadastrar(FuncionarioDTO dto) {
+        if (!cpfValido(dto.getCpf())) {
+            throw new NegocioException("CPF inválido.");
+        }
         if (funcionarioRepo.existsByCpf(dto.getCpf())) {
             throw new DuplicadoException("CPF " + dto.getCpf() + " já cadastrado.");
         }
@@ -80,6 +87,42 @@ public class FuncionarioService {
         f.setAtivo(true);
 
         return toDTO(funcionarioRepo.save(f));
+    }
+
+    @Transactional
+    public void deletar(Long id) {
+        if (!funcionarioRepo.existsById(id)) {
+            throw new EntidadeNaoEncontradaException("Funcionário #" + id + " não encontrado.");
+        }
+        if (emprestimoRepo.existsByFuncionarioId(id)) {
+            throw new NegocioException("Não é possível excluir: funcionário possui empréstimo(s) associado(s).");
+        }
+
+        funcionarioRepo.deleteById(id);
+    }
+
+    private boolean cpfValido(String cpf) {
+        if (cpf == null) return false;
+
+        String digitos = cpf.replaceAll("\\D", "");
+        if (digitos.length() != 11 || digitos.chars().distinct().count() == 1) {
+            return false;
+        }
+
+        int primeiroDigito = calcularDigitoCpf(digitos, 9);
+        int segundoDigito = calcularDigitoCpf(digitos, 10);
+
+        return primeiroDigito == Character.getNumericValue(digitos.charAt(9))
+                && segundoDigito == Character.getNumericValue(digitos.charAt(10));
+    }
+
+    private int calcularDigitoCpf(String digitos, int tamanho) {
+        int soma = 0;
+        for (int i = 0; i < tamanho; i++) {
+            soma += Character.getNumericValue(digitos.charAt(i)) * (tamanho + 1 - i);
+        }
+        int resto = soma % 11;
+        return resto < 2 ? 0 : 11 - resto;
     }
 
     /** RF015 — atualizar nome, cargo ou status ativo de um funcionário. */

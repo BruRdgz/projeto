@@ -68,6 +68,13 @@ public class CirculacaoService {
                 .toList();
     }
 
+    public EmprestimoDTO buscarEmprestimoAtivoPorExemplar(Long exemplarId) {
+        return emprestimoRepo.findActivoByExemplarId(exemplarId)
+                .map(this::toDTO)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        "Nenhum empréstimo ativo encontrado para o exemplar #" + exemplarId + "."));
+    }
+
     // ----------------------------------------------------------------- WRITE
 
     /**

@@ -3,6 +3,8 @@ package com.bibliotecacultura.controller;
 import com.bibliotecacultura.service.CirculacaoService;
 import com.bibliotecacultura.service.AcervoService;
 import com.bibliotecacultura.service.ClienteService;
+import com.bibliotecacultura.session.SessaoFuncionario;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/circulacao")
 public class CirculacaoController {
-
-    // TODO: replace hardcoded ID with session-based logged-in user (deferred auth task)
-    private static final Long FUNCIONARIO_PLACEHOLDER_ID = 1L;
 
     private final CirculacaoService circulacaoService;
     private final AcervoService acervoService;
@@ -38,10 +37,17 @@ public class CirculacaoController {
     @PostMapping("/emprestimo")
     public String registrarEmprestimo(@RequestParam String clienteCpf,
                                       @RequestParam Long livroId,
+                                      HttpSession session,
                                       RedirectAttributes ra) {
-        circulacaoService.registrarEmprestimo(clienteCpf, livroId, FUNCIONARIO_PLACEHOLDER_ID);
-        ra.addFlashAttribute("sucesso", "Empréstimo registrado com sucesso!");
-        return "redirect:/circulacao/emprestimo";
+        try {
+            SessaoFuncionario sessao = (SessaoFuncionario) session.getAttribute("sessao");
+            circulacaoService.registrarEmprestimo(clienteCpf, livroId, sessao.getId());
+            ra.addFlashAttribute("sucesso", "Empréstimo registrado com sucesso!");
+        } catch (Exception e) {
+            ra.addFlashAttribute("erro", "Não foi possível concluir a operação.");
+        }
+
+        return "redirect:/realizar-emprestimo";
     }
 
     // ── GET /circulacao/devolucao — return form (RF008) ───────────────────────
@@ -54,15 +60,20 @@ public class CirculacaoController {
     @PostMapping("/devolucao")
     public String registrarDevolucao(@RequestParam Long exemplarId,
                                      RedirectAttributes ra) {
-        var dto = circulacaoService.registrarDevolucao(exemplarId);
-        if (dto.getMultaAplicada() != null &&
-                dto.getMultaAplicada().compareTo(java.math.BigDecimal.ZERO) > 0) {
-            ra.addFlashAttribute("aviso",
-                    "Devolução registrada com multa de R$ " + dto.getMultaAplicada() + ".");
-        } else {
-            ra.addFlashAttribute("sucesso", "Devolução registrada com sucesso!");
+        try {
+            var dto = circulacaoService.registrarDevolucao(exemplarId);
+            if (dto.getMultaAplicada() != null &&
+                    dto.getMultaAplicada().compareTo(java.math.BigDecimal.ZERO) > 0) {
+                ra.addFlashAttribute("aviso",
+                        "Devolução registrada com multa de R$ " + dto.getMultaAplicada() + ".");
+            } else {
+                ra.addFlashAttribute("sucesso", "Devolução registrada com sucesso!");
+            }
+        } catch (Exception e) {
+            ra.addFlashAttribute("erro", "Não foi possível concluir a operação.");
         }
-        return "redirect:/circulacao/devolucao";
+
+        return "redirect:/realizar-devolucao";
     }
 
     // ── GET /circulacao/renovacao — renewal form (RF007) ─────────────────────

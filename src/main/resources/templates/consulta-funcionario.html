@@ -43,12 +43,12 @@
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Acervo</span>
             <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
+            <a href="/cadastro-livro" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
+            <a href="/cadastro-exemplar" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
         </div>
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Usuários</span>
-            <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+            <a href="/perfil-cliente" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
             <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar cliente</a>
         </div>
         <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
@@ -104,7 +104,7 @@
         <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${erro}"></span>
     </div>
 
-    <!-- Barra de busca + botão novo funcionário (só ADM) -->
+    <!-- Barra de busca + botão de cadastro de funcionário (só ADM) -->
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:16px;">
         <form method="get" action="/consulta-funcionario" style="flex:1; display:flex; gap:8px;">
             <input type="text" name="q" th:value="${q}"
@@ -116,7 +116,7 @@
         </form>
         <a th:if="${sessao != null and sessao.adm}" href="/cadastro-funcionario"
            style="padding:8px 18px; background:#16a34a; color:#fff; border-radius:6px; text-decoration:none; white-space:nowrap;">
-            <i class="fa-regular fa-square-plus"></i> Novo funcionário
+            <i class="fa-regular fa-square-plus"></i> Cadastrar funcionário
         </a>
     </div>
 
@@ -125,6 +125,7 @@
         <table class="tabela-funcionarios" style="width:100%; border-collapse:collapse;">
             <thead>
             <tr>
+                <th style="text-align:left; padding:10px 12px; background:#f1f5f9;">ID</th>
                 <th style="text-align:left; padding:10px 12px; background:#f1f5f9;">Nome</th>
                 <th style="text-align:left; padding:10px 12px; background:#f1f5f9;">CPF</th>
                 <th style="text-align:left; padding:10px 12px; background:#f1f5f9;">Matrícula</th>
@@ -135,12 +136,13 @@
             </thead>
             <tbody>
             <tr th:if="${#lists.isEmpty(funcionarios)}">
-                <td colspan="6" style="text-align:center; padding:24px; color:#94a3b8;">
+                <td colspan="7" style="text-align:center; padding:24px; color:#94a3b8;">
                     Nenhum funcionário encontrado.
                 </td>
             </tr>
             <tr th:each="f : ${funcionarios}"
                 style="border-bottom:1px solid #e2e8f0;">
+                <td style="padding:10px 12px;" th:text="'FUNC-' + ${f.id}">FUNC-1</td>
                 <td style="padding:10px 12px;" th:text="${f.nome}">Nome</td>
                 <td style="padding:10px 12px;" th:text="${f.cpf}">CPF</td>
                 <td style="padding:10px 12px;" th:text="${f.matricula}">Matrícula</td>
@@ -172,6 +174,15 @@
                        title="Editar">
                         <i class="fa-regular fa-pen-to-square"></i>
                     </a>
+                    <form th:action="@{/funcionarios/{id}/deletar(id=${f.id})}"
+                          method="POST" style="display:inline;"
+                          onsubmit="return confirm('Confirma a exclusão deste funcionário?')">
+                        <button type="submit"
+                                style="color:#dc2626; border:none; background:none; cursor:pointer; font-size:16px;"
+                                title="Excluir">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
             </tbody>

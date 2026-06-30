@@ -43,12 +43,12 @@
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Acervo</span>
             <a href="/visualizar-acervo" class="subitem-menu"><i class="fa-solid fa-book"></i> Visualizar Acervo</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
-            <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
+            <a href="/cadastro-livro" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar livro</a>
+            <a href="/cadastro-exemplar" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar exemplar</a>
         </div>
         <div class="grupo-menu-lateral">
             <span class="categoria-titulo">Usuários</span>
-            <a href="#" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
+            <a href="/perfil-cliente" class="subitem-menu"><i class="fa-solid fa-users"></i> Visualizar clientes</a>
             <a href="#" class="subitem-menu"><i class="fa-regular fa-square-plus"></i> Cadastrar cliente</a>
         </div>
         <div class="grupo-menu-lateral" th:if="${sessao != null and sessao.adm}">
@@ -103,12 +103,11 @@
     <div th:if="${erro}" style="color:#c0392b; background:#fde8e8; border:1px solid #e57373; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
         <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${erro}"></span>
     </div>
+    <div th:if="${aviso}" style="color:#7d6608; background:#fef9e7; border:1px solid #f4d03f; border-radius:6px; padding:10px 14px; margin-bottom:16px;">
+        <i class="fa-solid fa-triangle-exclamation"></i> <span th:text="${aviso}"></span>
+    </div>
 
-    <!--
-        O fluxo real de empréstimo acontece via POST /circulacao/emprestimo.
-        Aqui usamos JS para buscar cliente e exemplar via GET antes de submeter.
-    -->
-    <form method="POST" action="/circulacao/emprestimo" id="form-emprestimo">
+    <form method="POST" action="/circulacao/devolucao" id="form-devolucao">
         <div class="grid-conteudo">
 
             <!-- Coluna esquerda: cliente -->
@@ -150,21 +149,10 @@
                 <div class="grupo-campo">
                     <label class="rotulo-campo" for="livro-devolvido">LIVRO DEVOLVIDO:</label>
                     <div class="busca-container">
-                        <select id="livro-devolvido" class="input-busca" name="livro-devolvido">
-                        <option value="livro1"></option>
-                        <option value="livro2"></option>
-                        <option value="livro3"></option>
+                        <select id="livro-devolvido" class="input-busca" name="livro-devolvido" disabled>
+                            <option value="">Busque o cliente primeiro...</option>
                         </select>
                     </div>
-                </div>
-
-                <!-- Resultado do livro — preenchido via JS -->
-                <div class="resultado-livro" id="resultado-livro" style="display:none;">
-                    <div class="livro-detalhes">
-                        <h4 id="livro-titulo"></h4>
-                        <p id="livro-autor"></p>
-                    </div>
-                    <button type="button" class="button-adicionar" onclick="adicionarLivro()"></button>
                 </div>
 
                 <!-- Lista de livros adicionados -->
@@ -172,8 +160,7 @@
             </div>
 
             <!-- Campos ocultos enviados no POST -->
-            <input type="hidden" name="clienteCpf" id="campo-cpf">
-            <input type="hidden" name="livroId"    id="campo-livro-id">
+            <input type="hidden" name="exemplarId" id="campo-exemplar-id">
 
             <div class="container-acao">
                 <button type="submit" class="button-concluir" id="btn-concluir" disabled>
@@ -185,8 +172,7 @@
 </main>
 
 <script>
-    let clienteValido = false;
-    let livroIdSelecionado = null;
+    let emprestimosAtivos = [];
 
     function buscarCliente() {
         const cpf = document.getElementById('cpf-cliente').value.trim();
@@ -201,65 +187,78 @@
                         c.statusSituacional === 'COM_MULTA' ? 'Com multa' : 'Bloqueado');
                 document.getElementById('cliente-total-multa').textContent =
                     'R$' + (c.saldoMulta || 0).toFixed(2).replace('.', ',');
+                document.getElementById('cliente-rodape').textContent = c.livrosAtivos && c.livrosAtivos.length
+                    ? 'Está com livros: ' + c.livrosAtivos.join(', ')
+                    : 'Não está com livros.';
                 document.getElementById('card-cliente').style.display = '';
                 document.getElementById('cliente-erro').style.display = 'none';
-                document.getElementById('campo-cpf').value = cpf;
-                clienteValido = c.statusSituacional !== 'BLOQUEADO';
-                atualizarBotao();
+                buscarEmprestimosAtivos(cpf);
             })
             .catch(() => {
                 document.getElementById('card-cliente').style.display = 'none';
-                document.getElementById('cliente-erro').textContent = 'Cliente não encontrado.';
+                document.getElementById('cliente-erro').textContent = 'Não foi possível concluir a operação.';
                 document.getElementById('cliente-erro').style.display = '';
-                clienteValido = false;
+                limparLivros();
                 atualizarBotao();
             });
     }
 
-    function buscarExemplar() {
-        const id = document.getElementById('exemplar-id-display').value.trim();
-        if (!id) return;
-
-        fetch('/api/exemplares/' + encodeURIComponent(id))
+    function buscarEmprestimosAtivos(cpf) {
+        fetch('/api/clientes/cpf/' + encodeURIComponent(cpf) + '/emprestimos-ativos')
             .then(r => r.ok ? r.json() : Promise.reject(r))
-            .then(e => {
-                document.getElementById('livro-titulo').textContent = e.livroTitulo;
-                document.getElementById('livro-autor').textContent = e.livroAutor;
-                document.getElementById('resultado-livro').style.display = '';
-                livroIdSelecionado = e.livroId;
+            .then(lista => {
+                emprestimosAtivos = lista;
+                const select = document.getElementById('livro-devolvido');
+                select.innerHTML = '<option value="">Selecione o livro...</option>';
+                lista.forEach(e => {
+                    const option = document.createElement('option');
+                    option.value = e.exemplarId;
+                    option.textContent = e.exemplarCodigo + ' - ' + e.livroTitulo;
+                    select.appendChild(option);
+                });
+                select.disabled = lista.length === 0;
+                document.getElementById('cliente-erro').textContent = lista.length === 0 ? 'Cliente não possui empréstimos ativos.' : '';
+                document.getElementById('cliente-erro').style.display = lista.length === 0 ? '' : 'none';
+                atualizarBotao();
             })
             .catch(() => {
-                document.getElementById('resultado-livro').style.display = 'none';
-                livroIdSelecionado = null;
+                limparLivros();
                 atualizarBotao();
             });
     }
 
-    function adicionarLivro() {
-        if (!livroIdSelecionado) return;
-        document.getElementById('campo-livro-id').value = livroIdSelecionado;
+    function selecionarLivro() {
+        const exemplarId = document.getElementById('livro-devolvido').value;
+        const emprestimo = emprestimosAtivos.find(e => String(e.exemplarId) === exemplarId);
+        document.getElementById('campo-exemplar-id').value = exemplarId;
 
-        const titulo = document.getElementById('livro-titulo').textContent;
-        document.getElementById('livros-adicionados').innerHTML =
-            '<div class="badge-livro">' + titulo + '</div>';
+        if (emprestimo) {
+            document.getElementById('livros-adicionados').innerHTML =
+                '<div class="badge-livro">' + emprestimo.exemplarCodigo + ' - ' + emprestimo.livroTitulo + '</div>';
+        } else {
+            document.getElementById('livros-adicionados').innerHTML = '';
+        }
 
-        document.getElementById('resultado-livro').style.display = 'none';
         atualizarBotao();
+    }
+
+    function limparLivros() {
+        emprestimosAtivos = [];
+        document.getElementById('livro-devolvido').innerHTML = '<option value="">Busque o cliente primeiro...</option>';
+        document.getElementById('livro-devolvido').disabled = true;
+        document.getElementById('campo-exemplar-id').value = '';
+        document.getElementById('livros-adicionados').innerHTML = '';
     }
 
     function atualizarBotao() {
         const btn = document.getElementById('btn-concluir');
-        const livroOk = !!document.getElementById('campo-livro-id').value;
-        btn.disabled = !(clienteValido && livroOk);
+        btn.disabled = !document.getElementById('campo-exemplar-id').value;
     }
 
-    // Busca ao pressionar Enter nos campos
     document.getElementById('cpf-cliente').addEventListener('keydown', e => {
         if (e.key === 'Enter') { e.preventDefault(); buscarCliente(); }
     });
-    document.getElementById('exemplar-id-display').addEventListener('keydown', e => {
-        if (e.key === 'Enter') { e.preventDefault(); buscarExemplar(); }
-    });
+    document.getElementById('livro-devolvido').addEventListener('change', selecionarLivro);
 </script>
 </body>
 </html>

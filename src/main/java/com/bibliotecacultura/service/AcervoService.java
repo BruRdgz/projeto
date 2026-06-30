@@ -80,6 +80,29 @@ public class AcervoService {
         return toDTO(livro);
     }
 
+    @Transactional
+    public void cadastrarExemplar(Long livroId) {
+        Livro livro = livroRepo.findById(livroId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Livro #" + livroId + " não encontrado."));
+
+        Exemplar exemplar = new Exemplar();
+        exemplar.setLivro(livro);
+        exemplar.setStatus(Exemplar.Status.DISPONIVEL);
+        exemplarRepo.save(exemplar);
+    }
+
+    @Transactional
+    public void deletarExemplar(Long id) {
+        Exemplar exemplar = exemplarRepo.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Exemplar #" + id + " não encontrado."));
+
+        if (exemplar.getStatus() == Exemplar.Status.INDISPONIVEL) {
+            throw new NegocioException("Não é possível excluir: exemplar está associado a um empréstimo ativo.");
+        }
+
+        exemplarRepo.delete(exemplar);
+    }
+
     /** RF004 — update title, author, year, or category. */
     @Transactional
     public LivroDTO alterar(Long id, LivroDTO dto) {
